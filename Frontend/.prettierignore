@@ -1,5 +1,8 @@
 build
-node_modules
 coverage
 
 **/*.html
+**/.git
+**/.svn
+**/.hg
+**/node_modules
