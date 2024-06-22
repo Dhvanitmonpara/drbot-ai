@@ -1,21 +1,15 @@
-import { useState } from "react";
+import { Outlet } from "react-router-dom";
 import "./App.css";
-import { Input } from "./Components";
+import { Header, Footer } from "./Components";
 
 function App() {
-    const [search, setSearch] = useState("");
-
-    return (
-        <>
-            <h1>Hello world</h1>
-            <Input
-                label="search"
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                placeholder="search here"
-            />
-        </>
-    );
+  return (
+    <>
+    <Header/>
+    <Outlet/>
+    <Footer/>
+    </>
+  );
 }
 
 export default App;
