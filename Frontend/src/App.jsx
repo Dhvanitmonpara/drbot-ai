@@ -5,9 +5,11 @@ import { Header, Footer } from "./Components";
 function App() {
   return (
     <>
-    <Header/>
-    <Outlet/>
-    <Footer/>
+      <main className="bg-[#EBF7F7]">
+        <Header />
+        <Outlet />
+        <Footer />
+      </main>
     </>
   );
 }

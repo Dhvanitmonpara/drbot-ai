@@ -3,7 +3,7 @@ import React, { useId } from "react";
 function Input({ label, type = "text", className = "", ...props }) {
   const id = useId();
   return (
-    <div>
+    <div className="w-full">
       {label && (
         <label className="leading-7 text-sm text-gray-400" htmlFor={id}>
           {label}
