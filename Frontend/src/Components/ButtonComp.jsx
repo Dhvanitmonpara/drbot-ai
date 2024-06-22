@@ -6,6 +6,8 @@ export default function ButtonComp({
   children,
   className,
   size,
+  svg = null,
+  ...props
 }) {
   // button bgColors:
   // default
@@ -16,8 +18,9 @@ export default function ButtonComp({
   // Danger
   return (
     <div className="flex flex-wrap gap-4 items-center">
-      <Button color={bgColor} className={className} size={size}>
+      <Button color={bgColor} className={className} size={size} {...props}>
         {children}
+        {svg ? svg : null}
       </Button>
     </div>
   );
