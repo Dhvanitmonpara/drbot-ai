@@ -32,7 +32,7 @@ function Header() {
   }, [menuRef]);
 
   return (
-    <header className="h-28 w-screen flex justify-between items-center px-10 md:px-16 lg:px-24">
+    <header className="h-[15vh] w-screen flex justify-between items-center px-10 md:px-16 lg:px-24">
       <MenuButton className="md:hidden inline-block" onClick={toggleMenu} />
       <Logo />
       <nav

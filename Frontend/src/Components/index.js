@@ -6,6 +6,9 @@ import Footer from './Footer.jsx'
 import ButtonComp from "./ButtonComp.jsx";
 import Card from "./Card.jsx";
 import MenuButton from './MenuButton/MenuButton.jsx'
+import SendButton from "./SendButton/SendButton.jsx";
+import ChatBubble from "./ChatBubble.jsx";
+import ChatHistoryMenu from "./ChatHistoryMenu.jsx";
 
 export {
     Input,
@@ -15,5 +18,8 @@ export {
     Footer,
     ButtonComp,
     Card,
-    MenuButton
+    MenuButton,
+    SendButton,
+    ChatBubble,
+    ChatHistoryMenu
 }
