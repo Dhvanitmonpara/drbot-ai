@@ -6,6 +6,7 @@ const ArrowDownIcon = ({ className = '', width = 24, height = 24, isRotated = fa
     transition: 'transform 0.3s ease-in-out'
   };
 
+  
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
