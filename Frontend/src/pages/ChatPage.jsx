@@ -39,11 +39,11 @@ function ChatPage() {
 
   return (
     <div className="h-[85vh] flex justify-center space-x-0 md:space-x-4 items-center w-screen">
-      <div className="h-[75vh] md:inline hidden mb-[5vh] w-3/12 bg-[#f2fcfa] border-2 rounded-3xl">
+      <div className="h-[75vh] lg:inline hidden mb-[5vh] lg:5/12 xl:w-3/12 bg-[#f2fcfa] border-2 rounded-3xl">
         <ChatHistoryMenu chats={chats} />
       </div>
-      <div className="md:h-[75vh] h-[85vh] mb-[5vh] md:w-7/12 w-full md:bg-[rgb(242,252,250)] relative border-none md:border-2 rounded-3xl">
-        <div className="md:hidden flex justify-center items-center w-full">
+      <div className="lg:h-[75vh] h-[85vh] mb-[5vh] lg:w-7/12 w-full lg:bg-[#f2fcfa] relative border-0 lg:border-2 rounded-3xl">
+        <div className="lg:hidden flex justify-center items-center w-full">
           <button
             className="flex z-40 space-x-3 font-semibold items-center justify-center"
             onClick={handleToggle}>
@@ -63,7 +63,7 @@ function ChatPage() {
           <ChatBubble isChatStart={true}>Fine wbu?</ChatBubble>
         </div>
         <div className="flex space-x-2 md:space-x-3 absolute justify-center bottom-0 md:bottom-3 items-center w-full">
-          <div className="flex w-9/12 lg:w-5/6">
+          <div className="flex justify-center items-center w-9/12 2xl:w-5/6">
             <Input
               className="h-[50px] rounded-xl focus:border-1 pl-4 w-full"
               placeholder="Hello..."
