@@ -1,17 +1,15 @@
 import React from "react";
 import "./MenuButton.css";
 
-function MenuButton({ className = "" }) {
+function MenuButton({ className = "", ...props }) {
   return (
     <div className={className}>
-      <input
-        hidden=""
-        className="check-icon"
-        id="check-icon"
-        name="check-icon"
-        type="checkbox"
-      />
-      <label className="bar bar--3"></label>
+      <input id="burger-checkbox" type="checkbox" {...props}/>
+      <label class="burger" for="burger-checkbox">
+        <span></span>
+        <span></span>
+        <span></span>
+      </label>
     </div>
   );
 }

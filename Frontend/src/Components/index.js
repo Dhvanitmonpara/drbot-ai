@@ -21,5 +21,5 @@ export {
     MenuButton,
     SendButton,
     ChatBubble,
-    ChatHistoryMenu
+    ChatHistoryMenu,
 }
