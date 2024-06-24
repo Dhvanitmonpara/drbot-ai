@@ -2,8 +2,8 @@ import React from "react";
 
 function ContactPage() {
   return (
-    <div className="hero flex items-baseline bg-transparent min-h-screen">
-      <div className="hero-content flex-col lg:flex-row-reverse">
+    <div className="hero flex items-center justify-center bg-transparent min-h-[85vh]">
+      <div className="hero-content flex-col h-full pb-0 md:pb-16 lg:flex-row-reverse">
         <div className="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl">
           <form className="card-body">
             <div className="form-control">
@@ -19,28 +19,23 @@ function ContactPage() {
             </div>
             <div className="form-control">
               <label className="label">
-                <span className="label-text">Password</span>
+                <span className="label-text">Message</span>
               </label>
-              <input
-                type="password"
-                placeholder="password"
-                className="input input-bordered"
+              <textarea
+                className="textarea textarea-bordered"
+                placeholder="Write something..."
                 required
-              />
-              <label className="label">
-                <a href="#" className="label-text-alt link link-hover">
-                  Forgot password?
-                </a>
-              </label>
+                rows="6"
+                ></textarea>
             </div>
             <div className="form-control mt-6">
-              <button className="btn btn-primary">Login</button>
+              <button className="btn btn-primary">Submit</button>
             </div>
           </form>
         </div>
-        <div className="text-center lg:text-left">
-          <h1 className="text-5xl font-bold">Contact Us!</h1>
-          <p className="py-6">
+        <div className="text-center pt-7 px-16 lg:p-0 lg:text-left">
+          <h1 className="lg:text-5xl text-4xl font-bold">Contact Us!</h1>
+          <p className="lg:py-6 pt-3 pb-7">
             We’re here to help you with any questions, concerns, or feedback you
             may have about our Healthcare Chatbot. Your satisfaction and
             well-being are our top priorities. Reach out to us through any of
