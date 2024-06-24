@@ -17,12 +17,14 @@ function Card({ title, content }) {
     </svg>
   );
   return (
-    <div className="bg-[#f2fcfa] hover:bg-[#eefffa] hover:scale-[102%] transition-all rounded-3xl flex flex-col gap-3 items-center justify-center px-[10px] py-[10px] border-2 shadow-[0px_0px_1px_0px_black] px-[15px] py-[27px] max-w-[251.825px]">
-      <h1 className=" cursor-pointer text-start font-semibold text-2xl text-center mb-2">
+    <div className="bg-[#f2fcfa] hover:bg-[#eefffa] hover:scale-[102%] transition-all rounded-[17px] flex flex-col gap-3 items-center justify-center px-[10px] py-[10px] border-2 shadow-[0px_0px_1px_0px_black] px-[12px] py-[27px] max-w-[251.825px]">
+      <h1 className=" pl-[25px]  cursor-pointer text-start font-semibold text-2xl text-center mb-2 w-full text-start">
         {title}
       </h1>
-      <p className="cursor-pointer text-[12px] text-center">{content}</p>
-      <div className="flex justify-center items-center">
+      <p className=" pl-[25px] cursor-pointer text-[12px] text-start">
+        {content}
+      </p>
+      <div className="flex justify-center items-center mt-5">
         <ButtonComp className="text-white bg-black" size="lg" svg={svg}>
           More
         </ButtonComp>
