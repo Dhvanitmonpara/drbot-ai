@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useId, useState } from "react";
 import {
   ChatBubble,
   Input,
@@ -8,16 +8,39 @@ import {
 } from "../Components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
+import { useParams } from "react-router-dom";
 
 function ChatPage() {
   const [isRotated, setIsRotated] = useState(false);
   const handleToggle = () => {
     setIsRotated(!isRotated);
   };
+
+  const chats = [
+    {
+      id: useId(),
+      title: "How can help you today?",
+    },
+    {
+      id: useId(),
+      title: "Do you need any help?",
+    },
+    {
+      id: useId(),
+      title: "You should take medicine on time",
+    },
+    {
+      id: useId(),
+      title: "Take paracetamol 3 times a day",
+    },
+  ];
+
+  const chatId = useParams();
+
   return (
     <div className="h-[85vh] flex justify-center space-x-0 md:space-x-4 items-center w-screen">
       <div className="h-[75vh] md:inline hidden mb-[5vh] w-3/12 bg-[#f2fcfa] border-2 rounded-3xl">
-        <ChatHistoryMenu />
+        <ChatHistoryMenu chats={chats} />
       </div>
       <div className="md:h-[75vh] h-[85vh] mb-[5vh] md:w-7/12 w-full md:bg-[rgb(242,252,250)] relative border-none md:border-2 rounded-3xl">
         <div className="md:hidden flex justify-center items-center w-full">
@@ -28,8 +51,11 @@ function ChatPage() {
             <ArrowDownIcon isRotated={isRotated} />
           </button>
         </div>
-        <div className={`w-screen fixed z-10 overflow-hidden ease-in-out transition-all bg-[#EBF7F7] ${isRotated ? "h-[85vh]" : "h-0"}`}>
-          <ChatHistoryMenu className="z-10"/>
+        <div
+          className={`w-screen fixed z-10 overflow-hidden ease-in-out transition-all bg-[#EBF7F7] ${
+            isRotated ? "h-[85vh]" : "h-0"
+          }`}>
+          <ChatHistoryMenu chats={chats} className="z-10" />
         </div>
         <div className="md:p-4 p-2 w-full h-full md:h-[70vh] overflow-y-scroll">
           {/* chat bubble */}
