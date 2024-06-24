@@ -1,9 +1,10 @@
 import React from "react";
-import './SendButton.css'
+import "./SendButton.css";
 
-function SendButton() {
+function SendButton({ className = "" }) {
   return (
-    <button className="h-[50px]">
+    <button
+      className={`sendButton h-[50px] pt-[0.7em] pr-[0.9em] pb-[0.7em] pl-[1em] bg-[#40bb98] ${className}`}>
       <div className="svg-wrapper-1">
         <div className="svg-wrapper">
           <svg
@@ -18,7 +19,7 @@ function SendButton() {
           </svg>
         </div>
       </div>
-      <span>Send</span>
+      <span className="font-semibold">Send</span>
     </button>
   );
 }

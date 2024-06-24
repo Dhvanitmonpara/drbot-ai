@@ -9,6 +9,7 @@ import MenuButton from './MenuButton/MenuButton.jsx'
 import SendButton from "./SendButton/SendButton.jsx";
 import ChatBubble from "./ChatBubble.jsx";
 import ChatHistoryMenu from "./ChatHistoryMenu.jsx";
+import ArrowDownIcon from "./ArrowDownIcon.jsx";
 
 export {
     Input,
@@ -22,4 +23,5 @@ export {
     SendButton,
     ChatBubble,
     ChatHistoryMenu,
+    ArrowDownIcon
 }

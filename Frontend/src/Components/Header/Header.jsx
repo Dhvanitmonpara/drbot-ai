@@ -53,7 +53,7 @@ function Header() {
         <ProfileIcon />
       </header>
       <div
-        className={`flex md:hidden fixed h-screen z-50 w-full bg-slate-100 flex-col top-0 transition-all ${
+        className={`flex md:hidden fixed h-screen z-50 w-full bg-[#EBF7F7] flex-col top-0 transition-all ${
           isMenuOpen ? "left-0" : "left-[-100%]"
         } p-4 justify-center items-center`}>
         <nav className="flex flex-col justify-center items-center">
