@@ -16,13 +16,13 @@ function ProfileIcon() {
       </div>
       <div
         tabIndex={0}
-        className="dropdown-content menu bg-[#27292b] rounded-box z-[1] w-[16rem] p-2 shadow flex flex-col items-center">
-        <p>mail.com</p>
+        className="dropdown-content menu bg-[#27292b] gap-[22px] w-[19rem] py-[16px] rounded-box z-[1] w-[16rem] p-2 shadow flex flex-col items-center">
+        <p>example@gmail.com</p>
         <div className="avatar placeholder cursor-pointer flex-col items-center">
-          <div className="bg-[#33691e] text-white w-14 rounded-full">
-            <span className="text-[25px]">UI</span>
+          <div className="bg-[#33691e] text-white w-[4.5rem] mb-2 rounded-full">
+            <span className="text-[32px]">UI</span>
           </div>
-          <p>Hi,Name!</p>
+          <p>Hi, Name!</p>
         </div>
         <Button>
           <svg

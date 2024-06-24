@@ -2,7 +2,7 @@ import React from "react";
 import heroImg from "../media/about-img.jpeg";
 function AboutUsPage() {
   return (
-    <div className="hero flex items-baseline bg-transparent min-h-screen">
+    <div className="hero flex items-baseline bg-transparent">
       <div className="hero-content flex-col lg:flex-row-reverse">
         <div>
           <h3 className="text-5xl font-bold">About Our Healthcare Chatbot</h3>
