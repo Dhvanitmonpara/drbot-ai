@@ -5,9 +5,9 @@ function AboutUsPage() {
   const navigate = useNavigate();
 
   return (
-    <div className="hero flex items-center bg-transparent min-h-[85vh] justify-center">
-      <div className="hero-content flex gap-10 h-full w-full md:pb-16 flex-col lg:flex-row-reverse">
-        <div className="h-full w-full">
+    <div className="hero flex items-baseline bg-transparent">
+      <div className="hero-content flex-col lg:flex-row-reverse">
+        <div>
           <h3 className="text-5xl font-bold">About Our Healthcare Chatbot</h3>
           <p className="lg:py-6 pt-4 py-7">
             Welcome to our Healthcare Chatbot platform, your digital companion

@@ -75,7 +75,8 @@ function ChatPage() {
             <SendButton />
           </div>
           <div>
-            <button className="inline-block md:hidden rounded-xl ease-in-out active:scale-[95%] transition-colors active:bg-[#32a685] bg-[#40bb98] px-5 py-[13px]">
+            <button className="inline-block md:hidden rounded-xl ease-in-out active:scale-[95%] transition-colors active:bg-[#32a685]
+                 bg-[#40bb98] px-5 py-[13px]">
               <FontAwesomeIcon icon={faPaperPlane} />
             </button>
           </div>
