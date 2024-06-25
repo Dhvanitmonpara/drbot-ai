@@ -1,14 +1,10 @@
 import { useState } from "react";
-import { Card, SendButton } from "../Components";
+import { ButtonComp, Input, Card, SendButton } from "../Components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 
 function HomePage() {
   const [search, setSearch] = useState("");
-
-  const searchHandler = (event) => {
-    event.preventDefault();
-  };
 
   return (
     <div className="w-screen flex justify-center items-center flex-col">
@@ -24,13 +20,9 @@ function HomePage() {
           Enter your task requirements and get matched with AI-powered solutions
         </p>
       </div>
-      <form
-        className="flex justify-center mb-8 gap-2 w-full"
-        onSubmit={(e) => searchHandler(e)}>
+      <form className="flex justify-center mb-8 gap-2 w-full">
         <input
           type="text"
-          onChange={(e) => setSearch(e.target.value)}
-          value={search}
           placeholder="Type here"
           className="input md:w-full w-7/12 max-w-md bg-[#c9d3d4] outline-[#5e5d5d] border-[1.5px] border-[#5e5d5d] rounded-[14px] px-4 py-2 text-black "
         />
