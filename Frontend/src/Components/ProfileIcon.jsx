@@ -27,7 +27,7 @@ function ProfileIcon() {
       </div>
       <div
         tabIndex={0}
-        className="dropdown-content menu bg-[#27292b] gap-[22px] w-[19rem] py-[16px] rounded-box z-[1] w-[16rem] p-2 shadow flex flex-col items-center">
+        className="dropdown-content menu bg-[#27292b] gap-[22px] py-[16px] rounded-box z-[1] w-[16rem] p-2 shadow flex flex-col items-center">
         <p>{userData.email}</p>
         <div className="avatar placeholder cursor-pointer flex-col items-center">
           <div className="bg-[#33691e] text-white w-[4.5rem] mb-2 rounded-full">

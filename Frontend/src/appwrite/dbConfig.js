@@ -31,14 +31,13 @@ export class DBService {
         }
     }
 
-    async sendMsg(id, { title, content }) {
+    async sendMsg(id, { content }) {
         try {
             return await this.databases.updateDocument(
                 conf.appwriteDatabaseId,
                 conf.appwriteCollectionId,
                 id,
                 {
-                    title,
                     content,
                 }
             )
