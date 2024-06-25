@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ButtonComp, Input, Card, SendButton } from "../Components";
+import { Card, SendButton } from "../Components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 
@@ -52,6 +52,32 @@ function HomePage() {
               title="Hello ji"
               content="Lorem, ipsum dolor sit amet consectetur adipisicing elit. Magnam aliquam numquam commodi, error maiores officia est in."
             />
+          </div>
+          <div className="w-full max-w-sm">
+            <Card
+              title="Hello ji"
+              content="Lorem, ipsum dolor sit amet consectetur adipisicing elit. Magnam aliquam numquam commodi, error maiores officia est in."
+            />
+          </div>
+          <div className="w-full max-w-sm">
+            <Card
+              title="Hello ji"
+              content="Lorem, ipsum dolor sit amet consectetur adipisicing elit. Magnam aliquam numquam commodi, error maiores officia est in."
+            />
+          </div>
+          <div className="w-full max-w-sm">
+            <Card
+              title="Hello ji"
+              content="Lorem, ipsum dolor sit amet consectetur adipisicing elit. Magnam aliquam numquam commodi, error maiores officia est in."
+            />
+          </div>
+          <div className="w-full max-w-sm">
+            <Card
+              title="Hello ji"
+              content="Lorem, ipsum dolor sit amet consectetur adipisicing elit. Magnam aliquam numquam commodi, error maiores officia est in."
+            />
+          </div>
+          <div className="w-full max-w-sm">
             <Card
               title="Hello ji"
               content="Lorem, ipsum dolor sit amet consectetur adipisicing elit. Magnam aliquam numquam commodi, error maiores officia est in."
