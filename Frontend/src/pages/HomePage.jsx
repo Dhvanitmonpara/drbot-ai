@@ -6,7 +6,7 @@ function HomePage() {
 
   return (
     <div className="w-screen flex justify-center items-center flex-col">
-      <div className="md:mt-16 md:pt-14 pt-0  mt-0 h-52 w-11/12 md:w-7/12 flex justify-center items-center">
+      <div className="md:mt-16 md:pt-14 pt-0 mt-0 h-52 w-11/12 lg:2/12 md:w-7/12 flex justify-center items-center">
         <p className="text-4xl md:text-5xl lg:6xl font-semibold w-full text-center">
           AI-powered{" "}
           <span className="text-[#40bb98] inline">OutsourcingGPT</span>{" "}
