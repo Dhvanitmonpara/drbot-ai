@@ -5,7 +5,7 @@ import { Header, Footer } from "./Components";
 function App() {
   return (
     <>
-      <main className="bg-[#EBF7F7] h-[100vh]">
+      <main className="bg-[#EBF7F7] min-h-[100vh]">
         <Header />
         <Outlet />
         <Footer />
