@@ -10,6 +10,7 @@ import SendButton from "./SendButton/SendButton.jsx";
 import ChatBubble from "./ChatBubble.jsx";
 import ChatHistoryMenu from "./ChatHistoryMenu.jsx";
 import ArrowDownIcon from "./ArrowDownIcon.jsx";
+import LoadingBtn from "./LoadingBtn.jsx"
 
 export {
     Input,
@@ -23,5 +24,6 @@ export {
     SendButton,
     ChatBubble,
     ChatHistoryMenu,
-    ArrowDownIcon
+    ArrowDownIcon,
+    LoadingBtn
 }

@@ -9,7 +9,6 @@ export default function ButtonComp({
   svg,
   ...props
 }) {
-  console.log(svg);
   // button bgColors:
   // default
   // Primary

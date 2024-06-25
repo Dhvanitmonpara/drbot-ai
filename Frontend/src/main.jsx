@@ -5,6 +5,8 @@ import "./index.css";
 import { createBrowserRouter, useNavigate } from "react-router-dom";
 import { RouterProvider } from "react-router-dom";
 import { NextUIProvider } from "@nextui-org/react";
+import { Provider } from "react-redux";
+import { store } from "./store/store.js";
 
 // pages
 import HomePage from "./pages/HomePage.jsx";
@@ -54,7 +56,9 @@ const router = createBrowserRouter([
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <NextUIProvider>
-      <RouterProvider router={router} />
+      <Provider store={store}>
+        <RouterProvider router={router} />
+      </Provider>
     </NextUIProvider>
   </React.StrictMode>
 );
