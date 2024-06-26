@@ -5,6 +5,7 @@ import {
   SendButton,
   ChatHistoryMenu,
   ArrowDownIcon,
+  Logo,
 } from "../Components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
@@ -14,14 +15,27 @@ import { Link } from "react-router-dom";
 import "./style/ChatPage.css";
 
 function ChatPage() {
-  const [allChats, setAllChats] = useState([]);
-  const [isRotated, setIsRotated] = useState(false);
   const [chat, setChat] = useState([]);
   const [input, setInput] = useState("");
+  const [isRotated, setIsRotated] = useState(false);
+  const [allChats, setAllChats] = useState([]);
+  const [userData, setUserData] = useState();
 
-  const dispatch = useDispatch();
-  const userData = useSelector((state) => state.auth.userData.userData);
-  const chatData = useSelector((state) => state.chat.chats.documents);
+  const isUserLoggedIn = useSelector((state) => state.auth.isUserLoggedIn);
+  const rawUserData = useSelector((state) => state.auth.userData);
+  const rawAllChats = useSelector((state) => state.chat.chats.documents);
+
+  useEffect(() => {
+    if (isUserLoggedIn) {
+      if (rawUserData) {
+        setUserData(rawUserData.userData);
+      }
+      if (rawAllChats) {
+        setAllChats(rawAllChats);
+      }
+    }
+  }, [isUserLoggedIn, rawUserData, rawAllChats]);
+
   const { chatId } = useParams();
 
   const msgHandler = (e) => {
@@ -34,27 +48,24 @@ function ChatPage() {
       setChat((prevChat) => [...prevChat, newChat]);
       setInput("");
     } else {
-
     }
   };
 
-  useEffect(() => {
-    setAllChats(chatData);
-  }, [chatData]);
+  console.log("chatId: " + chatId);
 
   const handleToggle = () => {
     setIsRotated(!isRotated);
   };
 
   useEffect(() => {
-    if (allChats) {
+    if (allChats && userData && userData.$id) {
       console.log(allChats);
       const filteredChats = allChats.filter(
-        (chat) => userData.$id === chat.$id
-      ); // FIXME: check chat structure
+        (chat) => chat.$id == userData.$id
+      );
       setChat(filteredChats);
     }
-  }, [allChats, userData.$id]);
+  }, [allChats, userData && userData.$id]);
 
   return (
     <>
@@ -79,19 +90,22 @@ function ChatPage() {
               <ChatHistoryMenu chats={allChats} className="z-10" />
             </div>
             <div className="main-content px-2 w-full py-0 flex justify-center items-center h-[97%] overflow-y-scroll md:h-[70vh] lg:h-[64vh]">
-              <div className="chat-container md:h-full h-[85%] overflow-y-scroll">
-                {/* chat bubble */}
-                {chat &&
-                  chat.map((individualChat) => (
-                    <ChatBubble
-                      className="individual-chat"
-                      key={() => useId()}
-                      isChatStart={individualChat.isAuthor}>
-                      {individualChat.text}
-                    </ChatBubble>
-                  ))}
-                  <div className="h-2/6" ></div>
-              </div>
+              {chatId ? (
+                <div className="chat-container md:h-full h-[85%] overflow-y-scroll">
+                  {chat &&
+                    chat.map((individualChat) => (
+                      <ChatBubble
+                        className="individual-chat"
+                        key={() => useId()}
+                        isChatStart={individualChat.isAuthor}>
+                        {individualChat.text}
+                      </ChatBubble>
+                    ))}
+                  <div className="h-2/6"></div>
+                </div>
+              ) : (
+                <Logo />
+              )}
             </div>
             <form
               onSubmit={(e) => msgHandler(e)}
@@ -99,11 +113,14 @@ function ChatPage() {
               <div className="flex justify-center items-center w-9/12 2xl:w-5/6">
                 <Input
                   className="h-[50px] rounded-xl focus:border-1 pl-4 w-full"
-                  placeholder="Hello..."
+                  placeholder={
+                    chatId ? "Hello..." : "Start a new conversation..."
+                  }
                   size="sm"
                   onChange={(e) => setInput(e.target.value)}
                   value={input}
                   type="search"
+                  autocomplete="off"
                 />
               </div>
               <div className="md:inline-block hidden">
