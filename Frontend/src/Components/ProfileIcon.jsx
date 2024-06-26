@@ -1,4 +1,5 @@
 import { ButtonComp } from "../Components";
+import { Button } from "@nextui-org/react";
 import React, { useEffect, useState } from "react";
 import authService from "../appwrite/authConfig";
 import { useNavigate } from "react-router-dom";

@@ -4,7 +4,7 @@ import "./LoadingBtn.css";
 function LoadingBtn({ className = "" }) {
   return (
     <div className={className}>
-      <div class="loader"></div>
+      <div className="loader"></div>
     </div>
   );
 }

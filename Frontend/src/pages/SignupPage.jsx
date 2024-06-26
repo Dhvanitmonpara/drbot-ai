@@ -10,10 +10,11 @@ function SignupPage() {
   const navigate = useNavigate();
   const [error, setError] = useState("");
   const dispatch = useDispatch();
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit, watch } = useForm();
   const [loading, setLoading] = useState(false);
 
   const create = async (data) => {
+    console.log("it works")
     setLoading(true);
     setError("");
     try {
@@ -96,15 +97,7 @@ function SignupPage() {
           <div className="mb-6">
             <label
               htmlFor="confirmPassword"
-              className="block text-gray-700 font-medium mb-2"
-              {...register("confirm_password", {
-                required: true,
-                validate: (value) => {
-                  if (watch("password") != value) {
-                    return "Your passwords do no match";
-                  }
-                },
-              })}>
+              className="block text-gray-700 font-medium mb-2">
               Confirm Password
             </label>
             <input
@@ -113,11 +106,17 @@ function SignupPage() {
               name="confirmPassword"
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#40bb98]"
               placeholder="Confirm your password"
-              required
+              {...register("confirm_password", {
+                required: true,
+                validate: (value) => {
+                  if (watch("password") != value) {
+                    setError("Your passwords do no match");
+                  }
+                },
+              })}
             />
           </div>
           {error && <p className="text-red-600 mt-8 text-center">{error}</p>}
-
           <div className="mt-8">
             {!loading ? (
               <button
