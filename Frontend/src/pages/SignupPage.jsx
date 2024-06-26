@@ -96,7 +96,15 @@ function SignupPage() {
           <div className="mb-6">
             <label
               htmlFor="confirmPassword"
-              className="block text-gray-700 font-medium mb-2">
+              className="block text-gray-700 font-medium mb-2"
+              {...register("confirm_password", {
+                required: true,
+                validate: (value) => {
+                  if (watch("password") != value) {
+                    return "Your passwords do no match";
+                  }
+                },
+              })}>
               Confirm Password
             </label>
             <input
@@ -114,11 +122,15 @@ function SignupPage() {
             {!loading ? (
               <button
                 type="submit"
-                className="w-full bg-[#40bb98] text-white py-2 px-4 rounded-md hover:bg-[#32a685] transition-colors duration-300">
+                className="w-full bg-[#40bb98] h-12 text-white py-2 px-4 rounded-md hover:bg-[#32a685] transition-colors duration-300">
                 Sign Up
               </button>
             ) : (
-              <LoadingBtn className="w-full" />
+              <button
+                type="submit"
+                className="w-full bg-[#40bb98] h-12 text-white py-2 px-4 rounded-md hover:bg-[#32a685] transition-colors duration-300">
+                <LoadingBtn className="h-full flex justify-center items-center" />
+              </button>
             )}
           </div>
         </form>

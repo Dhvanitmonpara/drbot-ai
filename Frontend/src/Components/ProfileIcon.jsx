@@ -1,4 +1,4 @@
-import { Button } from "@nextui-org/react";
+import { ButtonComp } from "../Components";
 import React, { useEffect, useState } from "react";
 import authService from "../appwrite/authConfig";
 import { useNavigate } from "react-router-dom";
@@ -13,10 +13,10 @@ function ProfileIcon() {
   const logoutHandler = () => {
     authService.logout();
     dispatch(logout());
+    setUserData(null);
     navigate("/");
   };
 
-  
   const isUserLoggedIn = useSelector((state) => state.auth.isUserLoggedIn);
   const rawUserData = useSelector((state) => state.auth.userData);
 
@@ -24,9 +24,7 @@ function ProfileIcon() {
     if (isUserLoggedIn) {
       if (rawUserData) {
         setUserData(rawUserData.userData);
-        if (!userData) {
-          setUserData(rawUserData);
-        }
+        if (!userData) setUserData(rawUserData);
       }
     }
   }, [isUserLoggedIn, rawUserData]);
@@ -53,7 +51,7 @@ function ProfileIcon() {
           </div>
           <p>{userData ? `Hi, ${userData.name}!` : "Login to continue"}</p>
         </div>
-        {userData ? (
+        {userData && isUserLoggedIn ? (
           <Button onClick={logoutHandler}>
             <svg
               height="24"
@@ -67,38 +65,22 @@ function ProfileIcon() {
             Log out
           </Button>
         ) : (
-          <>
-            <Button
+          <div className="flex justify-center items-center overflow-hidden rounded-2xl">
+            <ButtonComp
+              className="rounded-none"
               onClick={() => {
                 navigate("/account/login");
               }}>
-              <svg
-                height="24"
-                viewBox="0 0 24 24"
-                width="24"
-                focusable="false"
-                className=" NMm5M">
-                <path d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z"></path>
-                <path d="M0 0h24v24H0z" fill="none"></path>
-              </svg>
               Login
-            </Button>
-            <Button
+            </ButtonComp>
+            <ButtonComp
+              className="rounded-none"
               onClick={() => {
                 navigate("/account/signup");
               }}>
-              <svg
-                height="24"
-                viewBox="0 0 24 24"
-                width="24"
-                focusable="false"
-                className=" NMm5M">
-                <path d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z"></path>
-                <path d="M0 0h24v24H0z" fill="none"></path>
-              </svg>
               Signup
-            </Button>
-          </>
+            </ButtonComp>
+          </div>
         )}
         <div className="text-[11px] flex gap-2">
           <span>Privacy Policy</span> ●<span>Terms of Service</span>

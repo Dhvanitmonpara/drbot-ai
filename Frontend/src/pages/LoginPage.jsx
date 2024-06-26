@@ -22,7 +22,7 @@ function LoginPage() {
         const userData = await authService.getCurrentUser();
         if (userData) dispatch(authLogin(userData));
         setLoading(false);
-        console.log(userData)
+        console.log(userData);
         navigate("/");
       }
     } catch (error) {
@@ -81,11 +81,15 @@ function LoginPage() {
             {!loading ? (
               <button
                 type="submit"
-                className="w-full bg-[#40bb98] text-white py-2 px-4 rounded-md hover:bg-[#32a685] transition-colors duration-300">
-                Sign Up
+                className="w-full bg-[#40bb98] h-12 text-white py-2 px-4 rounded-md hover:bg-[#32a685] transition-colors duration-300">
+                Log In
               </button>
             ) : (
-              <LoadingBtn className="w-full" />
+              <button
+                type="submit"
+                className="w-full bg-[#40bb98] h-12 text-white py-2 px-4 rounded-md hover:bg-[#32a685] transition-colors duration-300">
+                <LoadingBtn className="h-full flex justify-center items-center" />
+              </button>
             )}
           </div>
         </form>

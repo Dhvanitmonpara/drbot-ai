@@ -10,7 +10,7 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 import { useParams } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import "./style/ChatPage.css";
 
@@ -29,13 +29,9 @@ function ChatPage() {
     if (isUserLoggedIn) {
       if (rawUserData) {
         setUserData(rawUserData.userData);
-        if(!userData){
-          setUserData(rawUserData)
-        }
+        if (!userData) setUserData(rawUserData);
       }
-      if (rawAllChats) {
-        setAllChats(rawAllChats);
-      }
+      if (rawAllChats) setAllChats(rawAllChats);
     }
   }, [isUserLoggedIn, rawUserData, rawAllChats]);
 
