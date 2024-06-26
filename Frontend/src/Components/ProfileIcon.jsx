@@ -2,26 +2,35 @@ import { Button } from "@nextui-org/react";
 import React, { useEffect, useState } from "react";
 import authService from "../appwrite/authConfig";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../store/authSlice";
 
 function ProfileIcon() {
   const navigate = useNavigate();
   const [userData, setUserData] = useState(null);
+
+  const dispatch = useDispatch();
   const logoutHandler = () => {
     authService.logout();
+    dispatch(logout());
     navigate("/");
   };
 
+  
   const isUserLoggedIn = useSelector((state) => state.auth.isUserLoggedIn);
   const rawUserData = useSelector((state) => state.auth.userData);
+  console.log(isUserLoggedIn)
 
   useEffect(() => {
     if (isUserLoggedIn) {
       if (rawUserData) {
         setUserData(rawUserData.userData);
+        if (!userData) {
+          setUserData(rawUserData);
+        }
       }
     }
-  }, [isUserLoggedIn, userData]);
+  }, [isUserLoggedIn, rawUserData]);
 
   return (
     <div className="dropdown dropdown-end z-[55] text-white">
@@ -45,7 +54,7 @@ function ProfileIcon() {
           </div>
           <p>{userData ? `Hi, ${userData.name}!` : "Login to continue"}</p>
         </div>
-        {userData ? (
+        {userData && isUserLoggedIn ? (
           <Button onClick={logoutHandler}>
             <svg
               height="24"

@@ -29,6 +29,9 @@ function ChatPage() {
     if (isUserLoggedIn) {
       if (rawUserData) {
         setUserData(rawUserData.userData);
+        if(!userData){
+          setUserData(rawUserData)
+        }
       }
       if (rawAllChats) {
         setAllChats(rawAllChats);
@@ -60,16 +63,14 @@ function ChatPage() {
   useEffect(() => {
     if (allChats && userData && userData.$id) {
       console.log(allChats);
-      const filteredChats = allChats.filter(
-        (chat) => chat.$id == userData.$id
-      );
+      const filteredChats = allChats.filter((chat) => chat.$id == userData.$id);
       setChat(filteredChats);
     }
   }, [allChats, userData && userData.$id]);
 
   return (
     <>
-      {userData ? (
+      {userData && isUserLoggedIn ? (
         <div className="h-[85vh] flex justify-center space-x-0 md:space-x-4 items-center w-screen">
           <div className="h-[75vh] lg:inline hidden mb-[5vh] lg:5/12 xl:w-3/12 bg-[#f2fcfa] border-2 rounded-3xl">
             <ChatHistoryMenu chats={allChats} />
@@ -120,7 +121,7 @@ function ChatPage() {
                   onChange={(e) => setInput(e.target.value)}
                   value={input}
                   type="search"
-                  autocomplete="off"
+                  autoComplete="off"
                 />
               </div>
               <div className="md:inline-block hidden">
