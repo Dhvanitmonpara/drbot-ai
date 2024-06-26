@@ -1,3 +1,19 @@
+[data-theme="light"] {
+  --color-start: rgb(255, 255, 255, 1);
+  --color-end: rgba(255, 255, 255, 0);
+  --color-start-sm: rgba(235, 247, 247, 1);
+}
+
+[data-theme="dark"] {
+  --color-start-sm: rgba(12, 41, 41, 1);
+  --color-end: rgba(255, 255, 255, 0);
+  --color-start: rgba(9, 31, 31, 1);
+}
+
+:root {
+  background: var(--color-start);
+}
+
 .main-content {
   position: relative;
   overflow: hidden;
@@ -25,18 +41,14 @@
   top: 0;
   background: linear-gradient(
     to bottom,
-    rgb(255, 255, 255, 1),
-    rgba(255, 255, 255, 0)
+    var(--color-start-sm),
+    var(--color-end)
   );
 }
 
 .main-content::after {
   bottom: 0;
-  background: linear-gradient(
-    to top,
-    rgba(255, 255, 255, 1),
-    rgba(255, 255, 255, 0)
-  );
+  background: linear-gradient(to top, var(--color-start-sm), var(--color-end));
 }
 
 @media (max-width: 1024px) {
@@ -45,16 +57,12 @@
     top: 0;
     background: linear-gradient(
       to bottom,
-      rgba(235, 247, 247, 1),
-      rgba(255, 255, 255, 0)
+      var(--color-start),
+      var(--color-end)
     );
   }
   .main-content::after {
     bottom: 0;
-    background: linear-gradient(
-      to top,
-      rgba(235, 247, 247, 1),
-      rgba(255, 255, 255, 0)
-    );
+    background: linear-gradient(to top, var(--color-start), var(--color-end));
   }
 }

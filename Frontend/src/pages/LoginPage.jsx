@@ -22,7 +22,6 @@ function LoginPage() {
         const userData = await authService.getCurrentUser();
         if (userData) dispatch(authLogin(userData));
         setLoading(false);
-        console.log(userData);
         navigate("/");
       }
     } catch (error) {

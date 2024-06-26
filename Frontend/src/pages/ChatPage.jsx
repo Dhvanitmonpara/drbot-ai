@@ -68,11 +68,11 @@ function ChatPage() {
     <>
       {userData && isUserLoggedIn ? (
         <div className="h-[85vh] flex justify-center space-x-0 md:space-x-4 items-center w-screen">
-          <div className="h-[75vh] lg:inline hidden mb-[5vh] lg:5/12 xl:w-3/12 bg-[#f2fcfa] border-2 rounded-3xl">
+          <div className="h-[75vh] lg:inline hidden mb-[5vh] lg:5/12 xl:w-3/12 dark:bg-[#0c2929] bg-[#f2fcfa] dark:border-[#0b2626] border-2 rounded-3xl">
             <ChatHistoryMenu chats={allChats} />
           </div>
-          <div className="lg:h-[75vh] pb-[70px] h-[85vh] mb-[5vh] lg:w-7/12 w-full lg:bg-[#f2fcfa] relative border-0 lg:border-2 rounded-3xl">
-            <div className="history-button lg:hidden flex justify-center items-center w-full">
+          <div className="lg:h-[75vh] pb-[70px] h-[85vh] mb-[5vh] lg:w-7/12 w-full dark:border-[#0b2626] dark:bg-[#0c2929] lg:bg-[#f2fcfa] relative border-0 lg:border-2 rounded-3xl">
+            <div className="history-button lg:hidden flex justify-center dark:bg-[#091f1f] items-center w-full">
               <button
                 className="flex z-40 space-x-3 font-semibold items-center justify-center"
                 onClick={handleToggle}>
@@ -81,7 +81,7 @@ function ChatPage() {
               </button>
             </div>
             <div
-              className={`w-screen fixed z-10 overflow-hidden ease-in-out transition-all bg-[#EBF7F7] ${
+              className={`w-screen fixed z-10 overflow-hidden ease-in-out transition-all dark:bg-[#0c2929] bg-[#EBF7F7] ${
                 isRotated ? "h-[85vh]" : "h-0"
               }`}>
               <ChatHistoryMenu chats={allChats} className="z-10" />
@@ -106,7 +106,7 @@ function ChatPage() {
             </div>
             <form
               onSubmit={(e) => msgHandler(e)}
-              className="flex space-x-2 md:space-x-3 absolute justify-center bottom-0 md:bottom-3 items-center w-full">
+              className="flex dark:bg-[#091f1f] md:dark:bg-[#0c2929] space-x-2 md:space-x-3 absolute justify-center bottom-0 md:bottom-3 items-center w-full">
               <div className="flex justify-center items-center w-9/12 2xl:w-5/6">
                 <Input
                   className="h-[50px] rounded-xl focus:border-1 pl-4 w-full"

@@ -35,7 +35,7 @@ function App() {
 
   if (!loading) {
     return (
-      <main className="bg-[#EBF7F7] min-h-[100vh]">
+      <main className="bg-[#EBF7F7] dark:text-white dark:bg-[#091f1f] min-h-[100vh]">
         <Header />
         <Outlet />
       </main>

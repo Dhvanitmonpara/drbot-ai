@@ -11,6 +11,7 @@ import ChatBubble from "./ChatBubble.jsx";
 import ChatHistoryMenu from "./ChatHistoryMenu.jsx";
 import ArrowDownIcon from "./ArrowDownIcon.jsx";
 import LoadingBtn from "./LoadingBtn/LoadingBtn.jsx"
+import ThemeBtn from "./ThemeBtn/ThemeBtn.jsx"
 
 export {
     Input,
@@ -25,5 +26,6 @@ export {
     ChatBubble,
     ChatHistoryMenu,
     ArrowDownIcon,
-    LoadingBtn
+    LoadingBtn,
+    ThemeBtn
 }

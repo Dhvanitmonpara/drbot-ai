@@ -49,19 +49,19 @@ function HomePage() {
         <div className="grid grid-cols-1 md:grid-cols-2 min-[1170px]:px-32 lg:px-16 xl:px-0 px-0 xl:grid-cols-3 gap-6 justify-items-center">
           <div className="w-full max-w-sm">
             <Card
-              title="Hello ji"
+              title="Good evening"
               content="Lorem, ipsum dolor sit amet consectetur adipisicing elit. Magnam aliquam numquam commodi, error maiores officia est in."
             />
           </div>
           <div className="w-full max-w-sm">
             <Card
-              title="Hello ji"
+              title="Hey there!"
               content="Lorem, ipsum dolor sit amet consectetur adipisicing elit. Magnam aliquam numquam commodi, error maiores officia est in."
             />
           </div>
           <div className="w-full max-w-sm">
             <Card
-              title="Hello ji"
+              title="Namaste..."
               content="Lorem, ipsum dolor sit amet consectetur adipisicing elit. Magnam aliquam numquam commodi, error maiores officia est in."
             />
           </div>

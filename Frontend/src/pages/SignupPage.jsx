@@ -32,7 +32,7 @@ function SignupPage() {
     }
   };
   return (
-    <div className="min-h-[85vh] flex justify-center items-center bg-[#EBF7F7]">
+    <div className="min-h-[85vh] flex justify-center items-center dark:bg-[#091f1f] bg-[#EBF7F7]">
       <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
         <h2 className="text-3xl font-semibold text-center mb-6">
           Join <span className="text-[#40bb98]">OutsourcingGPT</span>

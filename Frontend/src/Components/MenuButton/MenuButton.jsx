@@ -3,12 +3,12 @@ import "./MenuButton.css";
 
 function MenuButton({ className = "", ...props }) {
   return (
-    <div className={className}>
+    <div className={`${className} `}>
       <input id="burger-checkbox" type="checkbox" {...props}/>
       <label className="burger" htmlFor="burger-checkbox">
-        <span></span>
-        <span></span>
-        <span></span>
+        <span className="dark:bg-slate-300"></span>
+        <span className="dark:bg-slate-300"></span>
+        <span className="dark:bg-slate-300"></span>
       </label>
     </div>
   );
