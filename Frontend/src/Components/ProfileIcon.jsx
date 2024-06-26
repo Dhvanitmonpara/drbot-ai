@@ -19,7 +19,6 @@ function ProfileIcon() {
   
   const isUserLoggedIn = useSelector((state) => state.auth.isUserLoggedIn);
   const rawUserData = useSelector((state) => state.auth.userData);
-  console.log(isUserLoggedIn)
 
   useEffect(() => {
     if (isUserLoggedIn) {
@@ -54,7 +53,7 @@ function ProfileIcon() {
           </div>
           <p>{userData ? `Hi, ${userData.name}!` : "Login to continue"}</p>
         </div>
-        {userData && isUserLoggedIn ? (
+        {userData ? (
           <Button onClick={logoutHandler}>
             <svg
               height="24"
