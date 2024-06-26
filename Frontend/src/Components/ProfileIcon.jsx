@@ -14,7 +14,7 @@ function ProfileIcon() {
   const userData = useSelector((state) => state.auth.userData.userData);
 
   return (
-    <div className="dropdown dropdown-end text-white">
+    <div className="dropdown dropdown-end z-[55] text-white">
       <div
         tabIndex={0}
         role="button"
