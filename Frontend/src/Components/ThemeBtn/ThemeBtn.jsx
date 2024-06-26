@@ -1,37 +1,50 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./ThemeBtn.css";
 
 function ThemeBtn({ label, className = "" }) {
-  const themeRoot = document.getElementById("root");
-  const themeHandler = (e) => {
-    themeRoot.classList.remove("light", "dark");
-    if (e.target.checked) {
+  const [isDarkTheme, setIsDarkTheme] = useState(false);
+
+  useEffect(() => {
+    const themeRoot = document.getElementById("root");
+
+    if (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) {
       themeRoot.setAttribute("data-theme", "dark");
       themeRoot.classList.add("dark");
+      setIsDarkTheme(true);
     } else {
       themeRoot.setAttribute("data-theme", "light");
       themeRoot.classList.add("light");
+      setIsDarkTheme(false);
+    }
+  }, []);
+
+  const themeHandler = () => {
+    const themeRoot = document.getElementById("root");
+
+    if (isDarkTheme) {
+      themeRoot.setAttribute("data-theme", "light");
+      themeRoot.classList.remove("dark");
+      themeRoot.classList.add("light");
+      setIsDarkTheme(false);
+    } else {
+      themeRoot.setAttribute("data-theme", "dark");
+      themeRoot.classList.remove("light");
+      themeRoot.classList.add("dark");
+      setIsDarkTheme(true);
     }
   };
 
-  if (
-    window.matchMedia &&
-    window.matchMedia("(prefers-color-scheme: dark)").matches
-  ) {
-    themeRoot.setAttribute("data-theme", "dark");
-    themeRoot.classList.add("dark");
-  }
-
   return (
     <div>
-      <label class="switch">
+      <label className="switch">
         <input
           type="checkbox"
-          onChange={(e) => themeHandler(e)}
+          onChange={themeHandler}
           id={label}
           className={className}
+          checked={isDarkTheme}
         />
-        <span class="slider"></span>
+        <span className="slider"></span>
       </label>
     </div>
   );
