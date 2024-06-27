@@ -147,7 +147,7 @@ function ChatPage() {
                       const newChatId = new Date().getTime().toString();
                       navigate(`/chats/${newChatId}`);
                     }}
-                    className="hover:underline md:text-2xl text-lg hover:text-gray-200 text-gray-400 cursor-pointer font-semibold">
+                    className="hover:underline md:text-2xl text-lg hover:text-gray-900 dark:hover:text-gray-200 text-gray-500 dark:text-gray-400 cursor-pointer font-semibold">
                     Select a chat or create new one
                   </span>
                 </div>

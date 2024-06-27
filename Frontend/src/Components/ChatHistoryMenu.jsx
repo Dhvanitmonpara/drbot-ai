@@ -34,7 +34,7 @@ export default function ChatHistoryMenu({ className, allChats }) {
               to={`/chats/${chat.id}`}
               className={({ isActive }) =>
                 `font-semibold text-lg ${
-                  isActive ? "text-gray-950 dark:text-gray-100" : "text-gray-600 dark:text-gray-500"
+                  isActive ? "text-gray-950 dark:text-gray-100" : "text-gray-500"
                 } dark:bg-[#0c2929]`
               }
               key={chat.id}>
