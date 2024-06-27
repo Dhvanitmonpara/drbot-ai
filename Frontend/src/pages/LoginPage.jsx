@@ -30,8 +30,8 @@ function LoginPage() {
     }
   };
   return (
-    <div className="min-h-[85vh] flex justify-center items-center bg-[#EBF7F7]">
-      <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
+    <div className="min-h-[85vh] flex justify-center items-center dark:bg-[#091f1f] bg-[#EBF7F7]">
+      <div className="bg-white dark:bg-zinc-900 p-8 rounded-lg shadow-md w-full max-w-md">
         <h2 className="text-3xl font-semibold text-center mb-6">
           Login to <span className="text-[#40bb98]">OutsourcingGPT</span>
         </h2>
@@ -39,7 +39,7 @@ function LoginPage() {
           <div className="mb-4">
             <label
               htmlFor="email"
-              className="block text-gray-700 font-medium mb-2">
+              className="block dark:text-gray-300 text-gray-700 font-medium mb-2">
               Email
             </label>
             <input
@@ -61,7 +61,7 @@ function LoginPage() {
           <div className="mb-6">
             <label
               htmlFor="password"
-              className="block text-gray-700 font-medium mb-2">
+              className="block text-gray-700 dark:text-gray-300 font-medium mb-2">
               Password
             </label>
             <input
@@ -93,7 +93,7 @@ function LoginPage() {
           </div>
         </form>
         <div className="mt-4 text-center">
-          <a href="#" className="text-[#40bb98] hover:underline">
+          <a href="#" className="text-[#40bb98] dark:bg-[#288f72] hover:underline">
             Forgot password?
           </a>
         </div>
@@ -102,7 +102,7 @@ function LoginPage() {
             Don't have an account?{" "}
             <Link
               to="/account/signup"
-              className="text-[#40bb98] hover:underline">
+              className="text-[#40bb98] dark:bg-[#288f72] hover:underline">
               Sign up
             </Link>
           </p>

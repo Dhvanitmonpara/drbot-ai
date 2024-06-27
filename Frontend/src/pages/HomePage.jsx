@@ -32,7 +32,7 @@ function HomePage() {
           onChange={(e) => setSearch(e.target.value)}
           value={search}
           placeholder="Type here"
-          className="input md:w-full w-7/12 max-w-md bg-[#c9d3d4] outline-[#5e5d5d] border-[1.5px] border-[#5e5d5d] rounded-[14px] px-4 py-2 text-black "
+          className="input md:w-full w-7/12 max-w-md dark:placeholder-[#565656] bg-[#c9d3d4] outline-[#5e5d5d] border-[1.5px] border-[#5e5d5d] rounded-[14px] px-4 py-2 text-black "
         />
         <div className="md:inline-block hidden">
           <SendButton />

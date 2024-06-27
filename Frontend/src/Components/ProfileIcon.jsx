@@ -82,9 +82,11 @@ function ProfileIcon() {
             </ButtonComp>
           </div>
         )}
-        <div className="flex justify-center items-center space-x-3">
-        <label htmlFor="theme-switch"></label>
-        <ThemeBtn label="theme-switch"/>
+        <div className="flex justify-center items-center p-3 rounded-3xl bg-[#323232] space-x-3">
+          <label htmlFor="theme-switch" className="text-[14px]">
+            Dark Theme:{" "}
+          </label>
+          <ThemeBtn label="theme-switch" />
         </div>
         <div className="text-[11px] flex gap-2">
           <span>Privacy Policy</span> ●<span>Terms of Service</span>

@@ -33,7 +33,7 @@ function SignupPage() {
   };
   return (
     <div className="min-h-[85vh] flex justify-center items-center dark:bg-[#091f1f] bg-[#EBF7F7]">
-      <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
+      <div className="bg-white dark:bg-zinc-900 p-8 rounded-lg shadow-md w-full max-w-md">
         <h2 className="text-3xl font-semibold text-center mb-6">
           Join <span className="text-[#40bb98]">OutsourcingGPT</span>
         </h2>
@@ -41,7 +41,7 @@ function SignupPage() {
           <div className="mb-4">
             <label
               htmlFor="name"
-              className="block text-gray-700 font-medium mb-2">
+              className="block dark:text-gray-300 text-gray-700 font-medium mb-2">
               Full Name
             </label>
             <input
@@ -58,7 +58,7 @@ function SignupPage() {
           <div className="mb-4">
             <label
               htmlFor="email"
-              className="block text-gray-700 font-medium mb-2">
+              className="block dark:text-gray-300 text-gray-700 font-medium mb-2">
               Email
             </label>
             <input
@@ -80,7 +80,7 @@ function SignupPage() {
           <div className="mb-4">
             <label
               htmlFor="password"
-              className="block text-gray-700 font-medium mb-2">
+              className="block dark:text-gray-300 text-gray-700 font-medium mb-2">
               Password
             </label>
             <input
@@ -97,7 +97,7 @@ function SignupPage() {
           <div className="mb-6">
             <label
               htmlFor="confirmPassword"
-              className="block text-gray-700 font-medium mb-2">
+              className="block dark:text-gray-300 text-gray-700 font-medium mb-2">
               Confirm Password
             </label>
             <input
@@ -121,13 +121,13 @@ function SignupPage() {
             {!loading ? (
               <button
                 type="submit"
-                className="w-full bg-[#40bb98] h-12 text-white py-2 px-4 rounded-md hover:bg-[#32a685] transition-colors duration-300">
+                className="w-full dark:bg-[#288f72] bg-[#40bb98] h-12 text-white py-2 px-4 rounded-md hover:bg-[#32a685] transition-colors duration-300">
                 Sign Up
               </button>
             ) : (
               <button
                 type="submit"
-                className="w-full bg-[#40bb98] h-12 text-white py-2 px-4 rounded-md hover:bg-[#32a685] transition-colors duration-300">
+                className="w-full bg-[#40bb98] dark:bg-[#288f72] h-12 text-white py-2 px-4 rounded-md hover:bg-[#32a685] transition-colors duration-300">
                 <LoadingBtn className="h-full flex justify-center items-center" />
               </button>
             )}
