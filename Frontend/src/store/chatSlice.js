@@ -19,11 +19,13 @@ const chatSlice = createSlice({
             let chat = state.chats.documents.find(chat => chat.id === chatId);
 
             if (!chat) {
-                chat = { id: chatId, title: "New Chat", content: [], userId };
+                chat = { id: chatId, title: "New Chat", content: "[]", userId };
                 state.chats.documents.push(chat);
             }
 
-            chat.content.push(message);
+            let chatContent = JSON.parse(chat.content);
+            chatContent.push(message);
+            chat.content = JSON.stringify(chatContent);
         },
         updateChatTitle: (state, action) => {
             const { chatId, title } = action.payload;
@@ -33,14 +35,13 @@ const chatSlice = createSlice({
             }
         },
         setGlobalInput: (state, action) => {
-            state.globalInput = action.payload
+            state.globalInput = action.payload;
         },
         resetGlobalInput: (state) => {
-            state.globalInput = null
+            state.globalInput = null;
         }
     }
 });
 
 export const { setChats, addMessage, updateChatTitle, setGlobalInput, resetGlobalInput } = chatSlice.actions;
-
-export default chatSlice.reducer;
+export default chatSlice.reducer

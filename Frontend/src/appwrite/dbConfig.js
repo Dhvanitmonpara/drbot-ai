@@ -1,8 +1,9 @@
+// dbConfig.js
 import conf from '../conf'
 import { Client, Databases } from 'appwrite'
 
 export class DBService {
-    client = new Client
+    client = new Client()
     databases
 
     constructor() {
@@ -14,6 +15,7 @@ export class DBService {
 
     async createNewChat({ id, title, content, userId }) {
         try {
+            const serializedContent = JSON.stringify(content);
             return await this.databases.createDocument(
                 conf.appwriteDatabaseId,
                 conf.appwriteCollectionId,
@@ -21,28 +23,29 @@ export class DBService {
                 {
                     id,
                     title,
-                    content,
+                    content: serializedContent,
                     userId,
                 }
             )
         } catch (error) {
-            console.log("Appwrite databaseService error in createNewChat : " + error)
+            console.log("Appwrite databaseService error in createNewChat: " + error)
             return false
         }
     }
 
     async sendMsg(id, { content }) {
         try {
+            const serializedContent = JSON.stringify(content);
             return await this.databases.updateDocument(
                 conf.appwriteDatabaseId,
                 conf.appwriteCollectionId,
                 id,
                 {
-                    content,
+                    content: serializedContent,
                 }
             )
         } catch (error) {
-            console.log("Appwrite databaseService error in sendMsg : " + error)
+            console.log("Appwrite databaseService error in sendMsg: " + error)
             return false
         }
     }
@@ -56,21 +59,20 @@ export class DBService {
             )
             return true
         } catch (error) {
-            console.log("Appwrite databaseService error in deleteChat : " + error)
+            console.log("Appwrite databaseService error in deleteChat: " + error)
             return false
         }
     }
 
     async getChats(queries) {
         try {
-            // [Query.equal("userId", `${userId}`)]
             return await this.databases.listDocuments(
                 conf.appwriteDatabaseId,
                 conf.appwriteCollectionId,
                 queries
             )
         } catch (error) {
-            console.log("Appwrite databaseService error in getChats : " + error)
+            console.log("Appwrite databaseService error in getChats: " + error)
             return false
         }
     }

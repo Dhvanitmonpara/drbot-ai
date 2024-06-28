@@ -24,12 +24,13 @@ export default function ChatHistoryMenu({
             New chat
           </ButtonComp>
         </div>
+        <hr className="bg-gray-500 my-3"/>
         {allChats &&
           allChats.map((chat) => (
             <NavLink
               to={`/chats/${chat.id}`}
               className={({ isActive }) =>
-                `font-semibold text-lg ${
+                `font-medium text-medium ${
                   isActive
                     ? "text-gray-950 dark:text-gray-100"
                     : "text-gray-500"

@@ -8,11 +8,16 @@ import {
 } from "../Components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { json, useLocation, useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import "./style/ChatPage.css";
-import { resetGlobalInput, addMessage, updateChatTitle, setChats } from "../store/chatSlice";
+import {
+  resetGlobalInput,
+  addMessage,
+  updateChatTitle,
+} from "../store/chatSlice";
+import dbService from "../appwrite/dbConfig";
 
 function ChatPage() {
   const [chat, setChat] = useState([]);
@@ -59,20 +64,48 @@ function ChatPage() {
       : setIsChatActive(true);
   }, [location, isGlobalInput]);
 
-  const msgHandler = (e) => {
+  const msgHandler = async (e) => {
     e.preventDefault();
     if (chatId && input.trim()) {
       const newChatMsg = {
         id: Date.now().toString(),
         isAuthor: false,
-        text: input.trim(),
+        text: input.trim().slice(0, 65), // Truncate message text to 65 characters
       };
-      dispatch(addMessage({ chatId, message: newChatMsg, userId: userData?.$id }));
-      setInput("");
-  
-      // Check if allChats is an array (it should always be now)
-      if (!allChats.some(chat => chat.id === chatId)) {
-        dispatch(updateChatTitle({ chatId, title: `New Chat ${allChats.length + 1}` }));
+
+      const chatExists = allChats.some((chat) => chat.id === chatId);
+
+      if (chatExists) {
+        // If chat exists, send the message
+        try {
+          const chat = allChats.find((chat) => chat.id === chatId);
+          const updatedContent = [...chat.content, newChatMsg];
+          await dbService.sendMsg(chatId, { content: updatedContent });
+          dispatch(
+            addMessage({ chatId, message: newChatMsg, userId: userData?.$id })
+          );
+          setInput("");
+        } catch (error) {
+          console.error("Failed to send message: ", error);
+        }
+      } else {
+        // If chat does not exist, create a new chat
+        try {
+          const newChat = {
+            id: chatId,
+            title: `New Chat ${allChats.length + 1}`,
+            content: [newChatMsg],
+            userId: userData?.$id,
+          };
+          await dbService.createNewChat(newChat);
+          dispatch(
+            addMessage({ chatId, message: newChatMsg, userId: userData?.$id })
+          );
+          dispatch(updateChatTitle({ chatId, title: newChat.title }));
+          setInput("");
+        } catch (error) {
+          console.error("Failed to create chat: ", error);
+        }
       }
     }
   };
@@ -85,7 +118,9 @@ function ChatPage() {
     if (allChats.length > 0 && chatId) {
       const currentChat = allChats.find((chat) => chat.id === chatId);
       if (currentChat) {
-        setChat(currentChat.content);
+        const rawChatData = currentChat.content;
+        const chatData = JSON.parse(rawChatData);
+        setChat(chatData);
       } else {
         setChat([]);
       }
@@ -155,7 +190,7 @@ function ChatPage() {
                 <Input
                   className="h-[50px] rounded-xl focus:border-1 pl-4 w-full"
                   placeholder={
-                    chatId ? "Hello..." : "Start a new conversation..."
+                    chatId ? "Say something..." : "Start a new conversation..."
                   }
                   size="sm"
                   onChange={(e) => setInput(e.target.value)}
