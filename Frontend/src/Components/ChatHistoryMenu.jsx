@@ -2,15 +2,11 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { Input } from "../Components";
 import { ButtonComp } from "../Components";
 
-export default function ChatHistoryMenu({ className, allChats }) {
-  const navigate = useNavigate();
-
-  console.log("chathistory: " ,allChats)
-
-  const newChatHandler = () => {
-    const newChatId = new Date().getTime().toString();
-    navigate(`/chats/${newChatId}`);
-  };
+export default function ChatHistoryMenu({
+  className,
+  allChats,
+  newChatHandler,
+}) {
   return (
     <div
       className={`flex flex-col w-full p-4 justify-center items-center ${className}`}>
@@ -34,7 +30,9 @@ export default function ChatHistoryMenu({ className, allChats }) {
               to={`/chats/${chat.id}`}
               className={({ isActive }) =>
                 `font-semibold text-lg ${
-                  isActive ? "text-gray-950 dark:text-gray-100" : "text-gray-500"
+                  isActive
+                    ? "text-gray-950 dark:text-gray-100"
+                    : "text-gray-500"
                 } dark:bg-[#0c2929]`
               }
               key={chat.id}>

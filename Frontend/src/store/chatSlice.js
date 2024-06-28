@@ -1,26 +1,46 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-    chats: []
-}
+    chats: {
+        documents: []
+    },
+    globalInput: null
+};
 
 const chatSlice = createSlice({
     name: "chat",
     initialState,
     reducers: {
-        addChat: (state, action) => {
-            const chat = {
-                isAuthor: action.payload.isAuthor,
-                text: action.payload.text
-            }
-            state.chats.push(chat)
-        },
         setChats: (state, action) => {
-            state.chats = action.payload
+            state.chats.documents = Array.isArray(action.payload) ? action.payload : [];
+        },
+        addMessage: (state, action) => {
+            const { chatId, message, userId } = action.payload;
+            let chat = state.chats.documents.find(chat => chat.id === chatId);
+
+            if (!chat) {
+                chat = { id: chatId, title: "New Chat", content: [], userId };
+                state.chats.documents.push(chat);
+            }
+
+            chat.content.push(message);
+        },
+        updateChatTitle: (state, action) => {
+            const { chatId, title } = action.payload;
+            const chat = state.chats.documents.find(chat => chat.id === chatId);
+            if (chat) {
+                chat.title = title;
+            }
+        },
+        setGlobalInput: (state, action) => {
+            state.globalInput = action.payload
+        },
+        resetGlobalInput: (state) => {
+            state.globalInput = null
         }
     }
-})
+});
 
-export const { addChat, setChats } = chatSlice.actions
+export const { setChats, addMessage, updateChatTitle, setGlobalInput, resetGlobalInput } = chatSlice.actions;
 
-export default chatSlice.reducer
+export default chatSlice.reducer;

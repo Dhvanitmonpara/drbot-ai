@@ -1,18 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   ChatBubble,
   Input,
   SendButton,
   ChatHistoryMenu,
   ArrowDownIcon,
-  Logo,
 } from "../Components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import "./style/ChatPage.css";
+import { resetGlobalInput, addMessage, updateChatTitle, setChats } from "../store/chatSlice";
 
 function ChatPage() {
   const [chat, setChat] = useState([]);
@@ -27,6 +27,14 @@ function ChatPage() {
   const navigate = useNavigate();
   const [isChatActive, setIsChatActive] = useState(false);
   const location = useLocation();
+  const isGlobalInput = useSelector((state) => state.chat.globalInput);
+  const dispatch = useDispatch();
+  const MsgInputRef = useRef(null);
+
+  const newChatHandler = () => {
+    const newChatId = new Date().getTime().toString();
+    navigate(`/chats/${newChatId}`);
+  };
 
   useEffect(() => {
     if (isUserLoggedIn) {
@@ -38,46 +46,34 @@ function ChatPage() {
   }, [isUserLoggedIn, rawUserData, rawAllChats]);
 
   useEffect(() => {
-    if (location.pathname == "/chats") {
-      setIsChatActive(false);
-    } else {
-      setIsChatActive(true);
+    if (isGlobalInput) {
+      setInput(isGlobalInput);
+      dispatch(resetGlobalInput());
+      newChatHandler();
+      MsgInputRef.current?.click();
     }
-  }, [location]);
+
+    // chat access based on route location
+    location.pathname == "/chats"
+      ? setIsChatActive(false)
+      : setIsChatActive(true);
+  }, [location, isGlobalInput]);
 
   const msgHandler = (e) => {
     e.preventDefault();
-    if (chatId) {
-      if (input.trim()) {
-        const newChatMsg = {
-          id: Date.now().toString(),
-          isAuthor: false,
-          text: input.trim(),
-        };
-
-        setChat((prevChat) => [...prevChat, newChatMsg]);
-
-        if (allChats.some((chatObj) => chatObj.id === chatId)) {
-          setAllChats((prevChats) =>
-            prevChats.map((chatObj) =>
-              chatObj.id === chatId
-                ? { ...chatObj, content: [...chatObj.content, newChatMsg] }
-                : chatObj
-            )
-          );
-        } else {
-          const newChatObj = {
-            id: chatId,
-            title: "New Chat", // FIXME: get this from AI
-            content: [newChatMsg],
-            userId: userData?.$id,
-          };
-          setAllChats((prevChats) => [...prevChats, newChatObj]);
-        }
-
-        setInput("");
+    if (chatId && input.trim()) {
+      const newChatMsg = {
+        id: Date.now().toString(),
+        isAuthor: false,
+        text: input.trim(),
+      };
+      dispatch(addMessage({ chatId, message: newChatMsg, userId: userData?.$id }));
+      setInput("");
+  
+      // Check if allChats is an array (it should always be now)
+      if (!allChats.some(chat => chat.id === chatId)) {
+        dispatch(updateChatTitle({ chatId, title: `New Chat ${allChats.length + 1}` }));
       }
-    } else {
     }
   };
 
@@ -96,14 +92,15 @@ function ChatPage() {
     }
   }, [allChats, chatId]);
 
-  console.log("allchats: ", allChats)
-
   return (
     <>
       {userData && isUserLoggedIn ? (
         <div className="h-[85vh] flex justify-center space-x-0 md:space-x-4 items-center w-screen">
           <div className="h-[75vh] lg:inline hidden mb-[5vh] lg:5/12 xl:w-3/12 dark:bg-[#0c2929] bg-[#f2fcfa] dark:border-[#0b2626] border-2 rounded-3xl">
-            <ChatHistoryMenu allChats={allChats} />
+            <ChatHistoryMenu
+              allChats={allChats}
+              newChatHandler={newChatHandler}
+            />
           </div>
           <div className="lg:h-[75vh] pb-[70px] h-[85vh] mb-[5vh] lg:w-7/12 w-full dark:border-[#0b2626] dark:bg-[#0c2929] lg:bg-[#f2fcfa] relative border-0 lg:border-2 rounded-3xl">
             <div className="history-button lg:hidden flex justify-center dark:bg-[#091f1f] items-center w-full">
@@ -143,10 +140,7 @@ function ChatPage() {
               ) : (
                 <div className="flex justify-center items-center flex-col space-y-4">
                   <span
-                    onClick={() => {
-                      const newChatId = new Date().getTime().toString();
-                      navigate(`/chats/${newChatId}`);
-                    }}
+                    onClick={newChatHandler}
                     className="hover:underline md:text-2xl text-lg hover:text-gray-900 dark:hover:text-gray-200 text-gray-500 dark:text-gray-400 cursor-pointer font-semibold">
                     Select a chat or create new one
                   </span>
@@ -155,6 +149,7 @@ function ChatPage() {
             </div>
             <form
               onSubmit={(e) => msgHandler(e)}
+              ref={MsgInputRef}
               className="flex dark:bg-[#091f1f] md:dark:bg-[#0c2929] space-x-2 md:space-x-3 absolute justify-center bottom-0 md:bottom-3 items-center w-full">
               <div className="flex justify-center items-center w-9/12 2xl:w-5/6">
                 <Input
@@ -167,6 +162,7 @@ function ChatPage() {
                   value={input}
                   type="search"
                   autoComplete="off"
+                  disabled={isChatActive ? false : true}
                 />
               </div>
               <div className="md:inline-block hidden">

@@ -2,12 +2,19 @@ import { useState } from "react";
 import { Card, SendButton } from "../Components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
+import { setGlobalInput } from "../store/chatSlice";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 function HomePage() {
   const [search, setSearch] = useState("");
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const searchHandler = (event) => {
     event.preventDefault();
+    dispatch(setGlobalInput(search));
+    navigate("/chats");
   };
 
   return (
