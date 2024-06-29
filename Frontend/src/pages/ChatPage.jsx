@@ -78,7 +78,8 @@ function ChatPage() {
       if (chatExists) {
         // If chat exists, send the message
         try {
-          const chat = allChats.find((chat) => chat.id === chatId);
+          const chat = await allChats.find((chat) => chat.id === chatId);
+          await setChat((prevChat) => JSON.parse(prevChat));
           const updatedContent = [...chat.content, newChatMsg];
           await dbService.sendMsg(chatId, { content: updatedContent });
           dispatch(
@@ -120,6 +121,7 @@ function ChatPage() {
       if (currentChat) {
         const rawChatData = currentChat.content;
         const chatData = JSON.parse(rawChatData);
+        console.log(chatData);
         setChat(chatData);
       } else {
         setChat([]);

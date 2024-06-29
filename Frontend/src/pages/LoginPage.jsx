@@ -80,7 +80,7 @@ function LoginPage() {
             <input className="cursor-pointer" type="checkbox" name='checkbox' id="checkbox" onClick={() => setShowPass(!showPass)} />
             <label
               htmlFor="checkbox"
-              className="block inline text-gray-700 dark:text-gray-300 font-medium cursor-pointer ">
+              className="block text-gray-700 dark:text-gray-300 font-medium cursor-pointer ">
               Show Password
             </label>
             </div>
@@ -104,7 +104,7 @@ function LoginPage() {
           </div>
         </form>
         <div className="mt-4 text-center">
-          <a href="#" className="text-[#40bb98] dark:bg-[#288f72] hover:underline">
+          <a href="#" className="text-[#40bb98] hover:underline">
             Forgot password?
           </a>
         </div>
@@ -113,7 +113,7 @@ function LoginPage() {
             Don't have an account?{" "}
             <Link
               to="/account/signup"
-              className="text-[#40bb98] dark:bg-[#288f72] hover:underline">
+              className="text-[#40bb98] hover:underline">
               Sign up
             </Link>
           </p>

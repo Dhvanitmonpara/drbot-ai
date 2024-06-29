@@ -35,7 +35,9 @@ export class DBService {
 
     async sendMsg(id, { content }) {
         try {
+            console.log("content: :",content)
             const serializedContent = JSON.stringify(content);
+            console.log("content from dbConfig: ",serializedContent)
             return await this.databases.updateDocument(
                 conf.appwriteDatabaseId,
                 conf.appwriteCollectionId,

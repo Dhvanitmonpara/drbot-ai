@@ -124,7 +124,7 @@ function SignupPage() {
               <input className="cursor-pointer" type="checkbox" name='checkbox' id="checkbox" onClick={() => setShowPass(!showPass)} />
               <label
                 htmlFor="checkbox"
-                className="block inline text-gray-700 dark:text-gray-300 font-medium cursor-pointer ">
+                className="block text-gray-700 dark:text-gray-300 font-medium cursor-pointer ">
                 Show Password
               </label>
             </div>

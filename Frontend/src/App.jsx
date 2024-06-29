@@ -1,6 +1,6 @@
 import { Outlet } from "react-router-dom";
 import "./App.css";
-import { Header } from "./Components";
+import { Header, LoadingBtn } from "./Components";
 import { useEffect, useState } from "react";
 import authService from "./appwrite/authConfig";
 import dbService from "./appwrite/dbConfig";
@@ -11,7 +11,7 @@ import { useDispatch } from "react-redux";
 
 function App() {
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null)
+  const [error, setError] = useState(null);
   const dispatch = useDispatch();
 
   const loginHandler = async (userData) => {
@@ -22,24 +22,34 @@ function App() {
       const chats = chatsResponse.documents || [];
       dispatch(setChats(chats));
     } catch (error) {
-      setError(error)
+      setError(error);
     }
   };
 
   useEffect(() => {
-    authService
-      .getCurrentUser()
-      .then((userData) => {
-        if (userData) {
-          loginHandler(userData);
-        } else {
-          dispatch(logout());
-        }
-      })
-      .finally(() => setLoading(false));
+    try {
+      authService
+        .getCurrentUser()
+        .then((userData) => {
+          if (userData) {
+            loginHandler(userData);
+          } else {
+            dispatch(logout());
+          }
+        })
+        .finally(() => setLoading(false));
+    } catch (error) {
+      setError(error);
+    }
   }, []);
 
-  if (loading) return <div>Loading...</div>;
+  if (loading)
+    return (
+      <div className="bg-[#091f1f] min-h-[100vh] flex-col flex justify-center items-center text-white">
+        <p className="text-4xl font-semibold">Loading...</p>
+        {error && <p>Something went wrong: {error}</p>}
+      </div>
+    );
 
   if (!loading) {
     if (error) {
