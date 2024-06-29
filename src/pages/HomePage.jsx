@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, SendButton } from "../Components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 import { setGlobalInput } from "../store/chatSlice";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import allSuggestions from "../../public/allSuggestions";
 
 function HomePage() {
   const [search, setSearch] = useState("");
@@ -14,6 +15,12 @@ function HomePage() {
   const searchHandler = (event) => {
     event.preventDefault();
     dispatch(setGlobalInput(search));
+    navigate("/chats");
+  };
+
+  const suggestionHandler = (e, suggestion) => {
+    e.preventDefault();
+    dispatch(setGlobalInput(suggestion));
     navigate("/chats");
   };
 
@@ -54,42 +61,16 @@ function HomePage() {
       </form>
       <div className="my-16 w-full px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 min-[1170px]:px-32 lg:px-16 xl:px-0 px-0 xl:grid-cols-3 gap-6 justify-items-center">
-          <div className="w-full max-w-sm">
-            <Card
-              title="Good evening"
-              content="Lorem, ipsum dolor sit amet consectetur adipisicing elit. Magnam aliquam numquam commodi, error maiores officia est in."
-            />
-          </div>
-          <div className="w-full max-w-sm">
-            <Card
-              title="Hey there!"
-              content="Lorem, ipsum dolor sit amet consectetur adipisicing elit. Magnam aliquam numquam commodi, error maiores officia est in."
-            />
-          </div>
-          <div className="w-full max-w-sm">
-            <Card
-              title="Namaste..."
-              content="Lorem, ipsum dolor sit amet consectetur adipisicing elit. Magnam aliquam numquam commodi, error maiores officia est in."
-            />
-          </div>
-          <div className="w-full max-w-sm">
-            <Card
-              title="Hello ji"
-              content="Lorem, ipsum dolor sit amet consectetur adipisicing elit. Magnam aliquam numquam commodi, error maiores officia est in."
-            />
-          </div>
-          <div className="w-full max-w-sm">
-            <Card
-              title="Hello ji"
-              content="Lorem, ipsum dolor sit amet consectetur adipisicing elit. Magnam aliquam numquam commodi, error maiores officia est in."
-            />
-          </div>
-          <div className="w-full max-w-sm">
-            <Card
-              title="Hello ji"
-              content="Lorem, ipsum dolor sit amet consectetur adipisicing elit. Magnam aliquam numquam commodi, error maiores officia est in."
-            />
-          </div>
+          {allSuggestions &&
+            allSuggestions.map((suggestion) => (
+              <div className="w-full max-w-sm" key={suggestion.title}>
+                <Card
+                  title={suggestion.title}
+                  onClick={(e) => suggestionHandler(e, suggestion.content)}
+                  content={suggestion.content}
+                />
+              </div>
+            ))}
         </div>
       </div>
     </div>
