@@ -75,7 +75,8 @@ export class DBService {
     }
 
     async getChats(userId) {
-        const queries = [Query.equal("userId", [userId])]
+        const queries = [Query.equal("userId", userId)]
+        console.log(userId)
         try {
             return await this.databases.listDocuments(
                 conf.appwriteDatabaseId,

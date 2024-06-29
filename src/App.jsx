@@ -18,6 +18,7 @@ function App() {
       await dispatch(login({ userData }));
       const userId = userData.$id
       const chatsResponse = await dbService.getChats(userId);
+      console.log(chatsResponse)
       const chats = chatsResponse.documents || [];
       dispatch(setChats(chats));
     } catch (error) {
@@ -55,7 +56,7 @@ function App() {
       return <h1>Some error occurred: {error}</h1>;
     } else {
       return (
-        <main className="bg-[#EBF7F7] dark:text-white dark:bg-[#091f1f] min-h-[100vh]">
+        <main className="bg-[#EBF7F7] dark:text-white overflow-x-hidden dark:bg-[#091f1f] min-h-[100vh]">
           <Header />
           <Outlet />
         </main>

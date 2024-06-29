@@ -213,7 +213,7 @@ function ChatPage() {
                       </ChatBubble>
                     ))}
                   {(chat == [] &&
-                    typeof chat.content == "array" &&
+                    typeof chat.content == "object" &&
                     chat.content.length == 0) ||
                   chat == "new chat" ? (
                     <div className="flex justify-center items-center h-full">
