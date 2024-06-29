@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   ChatBubble,
   Input,
@@ -25,18 +25,18 @@ function ChatPage() {
   const [isRotated, setIsRotated] = useState(false);
   const [allChats, setAllChats] = useState([]);
   const [userData, setUserData] = useState(null);
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [isChatActive, setIsChatActive] = useState(false);
   const isUserLoggedIn = useSelector((state) => state.auth.isUserLoggedIn);
   const rawUserData = useSelector((state) => state.auth.userData);
   const rawAllChats = useSelector((state) => state.chat.chats.documents);
   const { chatId } = useParams();
   const navigate = useNavigate();
-  const [isChatActive, setIsChatActive] = useState(false);
   const location = useLocation();
-  const isGlobalInput = useSelector((state) => state.chat.globalInput);
+  const isGlobalInput = useSelector((state) => state.chat.globalInput)
   const dispatch = useDispatch();
   const MsgInputRef = useRef(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
 
   const newChatHandler = () => {
     const newChatId = new Date().getTime().toString();
@@ -102,7 +102,7 @@ function ChatPage() {
 
           setInput("");
         } catch (error) {
-          console.error("Failed to send message: ", error);
+          setError("Failed to send message: ", error);
         }
       } else {
         try {
@@ -235,8 +235,8 @@ function ChatPage() {
               )}
             </div>
             <form
-              onSubmit={(e) => msgHandler(e)}
               ref={MsgInputRef}
+              onSubmit={(e) => msgHandler(e)}
               className="flex dark:bg-[#091f1f] md:dark:bg-[#0c2929] space-x-2 md:space-x-3 absolute justify-center bottom-0 md:bottom-3 items-center w-full">
               <div className="flex justify-center items-center w-9/12 2xl:w-5/6">
                 <Input

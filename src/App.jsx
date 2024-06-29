@@ -18,7 +18,6 @@ function App() {
       await dispatch(login({ userData }));
       const userId = userData.$id
       const chatsResponse = await dbService.getChats(userId);
-      console.log(chatsResponse)
       const chats = chatsResponse.documents || [];
       dispatch(setChats(chats));
     } catch (error) {

@@ -17,7 +17,6 @@ function SignupPage() {
 
 
   const create = async (data) => {
-    console.log("it works")
     setLoading(true);
     setError("");
 
@@ -31,7 +30,6 @@ function SignupPage() {
         navigate("/");
       }
     } catch (error) {
-      console.log("error returned");
       setError(error.message);
       setLoading(false);
     }

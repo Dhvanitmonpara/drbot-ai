@@ -33,8 +33,7 @@ export class DBService {
                 }
             )
         } catch (error) {
-            console.log("Appwrite databaseService error in createNewChat: " + error)
-            return false
+            return ("Appwrite databaseService error in createNewChat: " + error)
         }
     }
 
@@ -55,8 +54,7 @@ export class DBService {
                 }
             )
         } catch (error) {
-            console.log("Appwrite databaseService error in sendMsg: " + error)
-            return false
+            return ("Appwrite databaseService error in sendMsg: " + error)
         }
     }
 
@@ -69,14 +67,12 @@ export class DBService {
             )
             return true
         } catch (error) {
-            console.log("Appwrite databaseService error in deleteChat: " + error)
-            return false
+            return ("Appwrite databaseService error in deleteChat: " + error)
         }
     }
 
     async getChats(userId) {
         const queries = [Query.equal("userId", userId)]
-        console.log(userId)
         try {
             return await this.databases.listDocuments(
                 conf.appwriteDatabaseId,
@@ -84,8 +80,7 @@ export class DBService {
                 queries
             )
         } catch (error) {
-            console.log("Appwrite databaseService error in getChats: " + error)
-            return false
+            return ("Appwrite databaseService error in getChats: " + error)
         }
     }
 }
