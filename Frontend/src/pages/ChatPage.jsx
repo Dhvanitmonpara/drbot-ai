@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import {
   ChatBubble,
   Input,
@@ -8,7 +8,7 @@ import {
 } from "../Components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
-import { json, useLocation, useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import "./style/ChatPage.css";
@@ -16,11 +16,12 @@ import {
   resetGlobalInput,
   addMessage,
   updateChatTitle,
+  setCurrentChat,
 } from "../store/chatSlice";
 import dbService from "../appwrite/dbConfig";
 
 function ChatPage() {
-  const [chat, setChat] = useState([]);
+  const [chat, setChat] = useState(null);
   const [input, setInput] = useState("");
   const [isRotated, setIsRotated] = useState(false);
   const [allChats, setAllChats] = useState([]);
@@ -78,13 +79,30 @@ function ChatPage() {
       if (chatExists) {
         // If chat exists, send the message
         try {
-          const chat = await allChats.find((chat) => chat.id === chatId);
-          await setChat((prevChat) => JSON.parse(prevChat));
-          const updatedContent = [...chat.content, newChatMsg];
-          await dbService.sendMsg(chatId, { content: updatedContent });
+          const rawChat = await allChats.find((chat) => chat.id === chatId);
+          console.log("rawchat: ", rawChat);
+
+          // Parse the content string into an array of message objects
+          const parsedContent = JSON.parse(rawChat.content);
+
+          // Create a new chat object with the parsed content
+          const chat = { ...rawChat, content: parsedContent };
+          console.log("parsed chat: ", chat);
+
+          // Add the new message to the content array
+          const updatedContent = [...parsedContent, newChatMsg];
+
+          console.log("updated chat: ", updatedContent);
+          // Send the updated content to the database
+          await dbService.sendMsg(chatId, {
+            content: JSON.stringify(updatedContent),
+          });
+
+          // Dispatch the new message to update the UI
           dispatch(
             addMessage({ chatId, message: newChatMsg, userId: userData?.$id })
           );
+
           setInput("");
         } catch (error) {
           console.error("Failed to send message: ", error);
@@ -115,19 +133,60 @@ function ChatPage() {
     setIsRotated(!isRotated);
   };
 
+  // useEffect(() => {
+  //   (async () => {
+  //     if (allChats.length > 0 && chatId) {
+  //       const currentChat = await allChats.find((chat) => chat.id === chatId);
+  //       if (currentChat) {
+  //         const chatContent = JSON.parse(currentChat.content);
+  //         const chatData = { ...currentChat, content: chatContent };
+  //         await dispatch(setCurrentChat(chatData));
+  //         const data = useSelector((state) => state.chat.currentChat);
+  //       } else {
+  //         setChat([]);
+  //         console.log("some error occurred parsing data");
+  //       }
+  //     }
+  //   })();
+  // }, [allChats, chatId]);
+
+  // const setChat = useCallback((newChat) => {
+  //   setState((prevState) => ({
+  //     ...prevState,
+  //     chat: newChat,
+  //   }));
+  // }, []);
+
+  const ChatComponent = React.memo(({ chatId, allChats }) => {
+    // Your component logic here
+  });
+
+  const routes = useMemo(
+    () => [{ path: "/chat/:id", element: <ChatComponent /> }],
+    []
+  );
+
   useEffect(() => {
-    if (allChats.length > 0 && chatId) {
-      const currentChat = allChats.find((chat) => chat.id === chatId);
-      if (currentChat) {
-        const rawChatData = currentChat.content;
-        const chatData = JSON.parse(rawChatData);
-        console.log(chatData);
-        setChat(chatData);
-      } else {
-        setChat([]);
+    const loadChat = async () => {
+      if (allChats.length > 0 && chatId) {
+        const currentChat = allChats.find((chat) => chat.id === chatId);
+        if (currentChat) {
+          const chatData = {
+            ...currentChat,
+            content: JSON.parse(currentChat.content),
+          };
+          console.log(chatData);
+          setChat(chatData);
+        }
       }
-    }
-  }, [allChats, chatId]);
+    };
+
+    loadChat();
+  }, [chatId, allChats]); // Dependencies
+
+  useEffect(() => {
+    console.log("chat changes: ", chat);
+  }, [chat]);
 
   return (
     <>
@@ -157,14 +216,16 @@ function ChatPage() {
             <div className="main-content px-2 w-full py-0 flex justify-center items-center h-[97%] overflow-y-scroll md:h-[70vh] lg:h-[64vh]">
               {isChatActive ? (
                 <div className="chat-container w-full md:h-full h-[85%] overflow-y-scroll">
-                  {chat.map((individualChat) => (
-                    <ChatBubble
-                      key={individualChat.id}
-                      className="individual-chat"
-                      isChatStart={individualChat.isAuthor}>
-                      {individualChat.text}
-                    </ChatBubble>
-                  ))}
+                  {chat &&
+                    chat.content &&
+                    chat.content.map((individualChat) => (
+                      <ChatBubble
+                        key={individualChat.id}
+                        className="individual-chat"
+                        isChatStart={individualChat.isAuthor}>
+                        {individualChat.text}
+                      </ChatBubble>
+                    ))}
                   {chat.length == 0 ? (
                     <div className="flex justify-center items-center h-full">
                       <span className="md:text-2xl text-lg text-gray-400 cursor-pointer font-semibold">
