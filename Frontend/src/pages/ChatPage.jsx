@@ -133,56 +133,21 @@ function ChatPage() {
     setIsRotated(!isRotated);
   };
 
-  // useEffect(() => {
-  //   (async () => {
-  //     if (allChats.length > 0 && chatId) {
-  //       const currentChat = await allChats.find((chat) => chat.id === chatId);
-  //       if (currentChat) {
-  //         const chatContent = JSON.parse(currentChat.content);
-  //         const chatData = { ...currentChat, content: chatContent };
-  //         await dispatch(setCurrentChat(chatData));
-  //         const data = useSelector((state) => state.chat.currentChat);
-  //       } else {
-  //         setChat([]);
-  //         console.log("some error occurred parsing data");
-  //       }
-  //     }
-  //   })();
-  // }, [allChats, chatId]);
-
-  // const setChat = useCallback((newChat) => {
-  //   setState((prevState) => ({
-  //     ...prevState,
-  //     chat: newChat,
-  //   }));
-  // }, []);
-
-  const ChatComponent = React.memo(({ chatId, allChats }) => {
-    // Your component logic here
-  });
-
-  const routes = useMemo(
-    () => [{ path: "/chat/:id", element: <ChatComponent /> }],
-    []
-  );
-
   useEffect(() => {
-    const loadChat = async () => {
+    (async () => {
       if (allChats.length > 0 && chatId) {
-        const currentChat = allChats.find((chat) => chat.id === chatId);
+        const currentChat = await allChats.find((chat) => chat.id === chatId);
         if (currentChat) {
-          const chatData = {
-            ...currentChat,
-            content: JSON.parse(currentChat.content),
-          };
-          console.log(chatData);
-          setChat(chatData);
+          const chatContent = JSON.parse(currentChat.content);
+          const chatData = { ...currentChat, content: chatContent };
+          setChat(chatData)
+        } else {
+          setChat([]);
+          console.log("some error occurred parsing data");
         }
       }
-    };
-
-    loadChat();
-  }, [chatId, allChats]); // Dependencies
+    })();
+  }, [allChats, chatId]);
 
   useEffect(() => {
     console.log("chat changes: ", chat);
