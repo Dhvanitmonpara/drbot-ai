@@ -16,7 +16,6 @@ import {
   resetGlobalInput,
   addMessage,
   updateChatTitle,
-  setCurrentChat,
 } from "../store/chatSlice";
 import dbService from "../appwrite/dbConfig";
 
@@ -36,10 +35,13 @@ function ChatPage() {
   const isGlobalInput = useSelector((state) => state.chat.globalInput);
   const dispatch = useDispatch();
   const MsgInputRef = useRef(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const newChatHandler = () => {
     const newChatId = new Date().getTime().toString();
     navigate(`/chats/${newChatId}`);
+    setChat("new chat");
   };
 
   useEffect(() => {
@@ -71,34 +73,29 @@ function ChatPage() {
       const newChatMsg = {
         id: Date.now().toString(),
         isAuthor: false,
-        text: input.trim().slice(0, 65), // Truncate message text to 65 characters
+        text: input.trim(),
       };
 
       const chatExists = allChats.some((chat) => chat.id === chatId);
 
       if (chatExists) {
-        // If chat exists, send the message
         try {
           const rawChat = await allChats.find((chat) => chat.id === chatId);
-          console.log("rawchat: ", rawChat);
-
-          // Parse the content string into an array of message objects
           const parsedContent = JSON.parse(rawChat.content);
-
-          // Create a new chat object with the parsed content
-          const chat = { ...rawChat, content: parsedContent };
-          console.log("parsed chat: ", chat);
-
-          // Add the new message to the content array
           const updatedContent = [...parsedContent, newChatMsg];
 
-          console.log("updated chat: ", updatedContent);
-          // Send the updated content to the database
           await dbService.sendMsg(chatId, {
             content: JSON.stringify(updatedContent),
           });
 
-          // Dispatch the new message to update the UI
+          const updatedChat = {
+            ...rawChat,
+            content: JSON.stringify(updatedContent),
+          };
+          setAllChats((prevChats) =>
+            prevChats.map((chat) => (chat.id === chatId ? updatedChat : chat))
+          );
+
           dispatch(
             addMessage({ chatId, message: newChatMsg, userId: userData?.$id })
           );
@@ -108,22 +105,24 @@ function ChatPage() {
           console.error("Failed to send message: ", error);
         }
       } else {
-        // If chat does not exist, create a new chat
         try {
           const newChat = {
             id: chatId,
             title: `New Chat ${allChats.length + 1}`,
-            content: [newChatMsg],
+            content: JSON.stringify([newChatMsg]),
             userId: userData?.$id,
           };
           await dbService.createNewChat(newChat);
+
+          setAllChats((prevChats) => [...prevChats, newChat]);
+
           dispatch(
             addMessage({ chatId, message: newChatMsg, userId: userData?.$id })
           );
           dispatch(updateChatTitle({ chatId, title: newChat.title }));
           setInput("");
         } catch (error) {
-          console.error("Failed to create chat: ", error);
+          setError("Failed to create chat: ", error);
         }
       }
     }
@@ -136,22 +135,29 @@ function ChatPage() {
   useEffect(() => {
     (async () => {
       if (allChats.length > 0 && chatId) {
-        const currentChat = await allChats.find((chat) => chat.id === chatId);
-        if (currentChat) {
-          const chatContent = JSON.parse(currentChat.content);
-          const chatData = { ...currentChat, content: chatContent };
-          setChat(chatData)
-        } else {
+        try {
+          setLoading(true);
+          const currentChat = await allChats.find((chat) => chat.id === chatId);
+          if (currentChat) {
+            const rawChatContent = JSON.parse(currentChat.content);
+            if (typeof rawChatContent == "string") {
+              const chatContent = JSON.parse(rawChatContent);
+              const chatData = { ...currentChat, content: chatContent };
+              setChat(chatData);
+            } else {
+              const chatData = { ...currentChat, content: rawChatContent };
+              setChat(chatData);
+            }
+          }
+        } catch (error) {
           setChat([]);
-          console.log("some error occurred parsing data");
+          setError("Some error occurred while fetching data: ", error);
+        } finally {
+          setLoading(false);
         }
       }
     })();
   }, [allChats, chatId]);
-
-  useEffect(() => {
-    console.log("chat changes: ", chat);
-  }, [chat]);
 
   return (
     <>
@@ -181,6 +187,21 @@ function ChatPage() {
             <div className="main-content px-2 w-full py-0 flex justify-center items-center h-[97%] overflow-y-scroll md:h-[70vh] lg:h-[64vh]">
               {isChatActive ? (
                 <div className="chat-container w-full md:h-full h-[85%] overflow-y-scroll">
+                  {loading ? (
+                    <div className="h-full w-full flex justify-center items-center">
+                      <h1 className="text-3xl text-black dark:text-white">
+                        Loading...
+                      </h1>
+                    </div>
+                  ) : null}
+                  {error ? (
+                    <div className="h-full w-full flex justify-center items-center">
+                      <h1 className="text-3xl text-black dark:text-white">
+                        {error}
+                      </h1>
+                    </div>
+                  ) : null}
+
                   {chat &&
                     chat.content &&
                     chat.content.map((individualChat) => (
@@ -191,7 +212,10 @@ function ChatPage() {
                         {individualChat.text}
                       </ChatBubble>
                     ))}
-                  {chat.length == 0 ? (
+                  {(chat == [] &&
+                    typeof chat.content == "array" &&
+                    chat.content.length == 0) ||
+                  chat == "new chat" ? (
                     <div className="flex justify-center items-center h-full">
                       <span className="md:text-2xl text-lg text-gray-400 cursor-pointer font-semibold">
                         No chats found, ask something

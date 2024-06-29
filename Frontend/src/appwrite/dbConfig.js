@@ -15,7 +15,12 @@ export class DBService {
 
     async createNewChat({ id, title, content, userId }) {
         try {
-            const serializedContent = JSON.stringify(content);
+            let serializedContent;
+            if (typeof content == "array" || "object") {
+
+                serializedContent = JSON.stringify(content);
+            }
+            serializedContent = content
             return await this.databases.createDocument(
                 conf.appwriteDatabaseId,
                 conf.appwriteCollectionId,
@@ -35,9 +40,12 @@ export class DBService {
 
     async sendMsg(id, { content }) {
         try {
-            console.log("content: :",content)
-            const serializedContent = JSON.stringify(content);
-            console.log("content from dbConfig: ",serializedContent)
+            let serializedContent;
+            if (typeof content == "array" || "object") {
+
+                serializedContent = JSON.stringify(content);
+            }
+            serializedContent = content
             return await this.databases.updateDocument(
                 conf.appwriteDatabaseId,
                 conf.appwriteCollectionId,

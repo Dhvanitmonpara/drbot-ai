@@ -4,7 +4,6 @@ const initialState = {
     chats: {
         documents: []
     },
-    currentChat: {},
     globalInput: null
 };
 
@@ -41,11 +40,8 @@ const chatSlice = createSlice({
         resetGlobalInput: (state) => {
             state.globalInput = null;
         },
-        setCurrentChat: (state, action) => {
-            state.currentChat = action.payload
-        },
     }
 });
 
-export const { setCurrentChat, setChats, addMessage, updateChatTitle, setGlobalInput, resetGlobalInput } = chatSlice.actions;
+export const { setChats, addMessage, updateChatTitle, setGlobalInput, resetGlobalInput } = chatSlice.actions;
 export default chatSlice.reducer
