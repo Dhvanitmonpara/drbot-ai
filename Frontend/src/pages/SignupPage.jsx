@@ -6,17 +6,22 @@ import { LoadingBtn } from "../Components/index";
 import { useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
 
+
 function SignupPage() {
   const navigate = useNavigate();
   const [error, setError] = useState("");
   const dispatch = useDispatch();
   const { register, handleSubmit, watch } = useForm();
   const [loading, setLoading] = useState(false);
+  const [showPass, setShowPass] = useState(false);
+
 
   const create = async (data) => {
     console.log("it works")
     setLoading(true);
     setError("");
+
+
     try {
       const userData = await authService.createAccount(data);
       if (userData) {
@@ -84,7 +89,7 @@ function SignupPage() {
               Password
             </label>
             <input
-              type="password"
+              type={showPass ? 'text' : 'password'}
               id="password"
               name="password"
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#40bb98]"
@@ -101,7 +106,7 @@ function SignupPage() {
               Confirm Password
             </label>
             <input
-              type="password"
+              type={showPass ? 'text' : 'password'}
               id="confirmPassword"
               name="confirmPassword"
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#40bb98]"
@@ -115,6 +120,15 @@ function SignupPage() {
                 },
               })}
             />
+            <div className="flex gap-2 mt-3 cursor-pointer" >
+              <input className="cursor-pointer" type="checkbox" name='checkbox' id="checkbox" onClick={() => setShowPass(!showPass)} />
+              <label
+                htmlFor="checkbox"
+                className="block inline text-gray-700 dark:text-gray-300 font-medium cursor-pointer ">
+                Show Password
+              </label>
+            </div>
+
           </div>
           {error && <p className="text-red-600 mt-8 text-center">{error}</p>}
           <div className="mt-8">
