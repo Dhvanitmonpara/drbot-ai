@@ -1,10 +1,9 @@
 import { Outlet } from "react-router-dom";
 import "./App.css";
-import { Header, LoadingBtn } from "./Components";
+import { Header } from "./Components";
 import { useEffect, useState } from "react";
 import authService from "./appwrite/authConfig";
 import dbService from "./appwrite/dbConfig";
-import { Query } from "appwrite";
 import { login, logout } from "./store/authSlice";
 import { setChats } from "./store/chatSlice";
 import { useDispatch } from "react-redux";
@@ -17,8 +16,8 @@ function App() {
   const loginHandler = async (userData) => {
     try {
       await dispatch(login({ userData }));
-      const queries = [Query.equal("userId", userData.$id)];
-      const chatsResponse = await dbService.getChats(queries);
+      const userId = userData.$id
+      const chatsResponse = await dbService.getChats(userId);
       const chats = chatsResponse.documents || [];
       dispatch(setChats(chats));
     } catch (error) {

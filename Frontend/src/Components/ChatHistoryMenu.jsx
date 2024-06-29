@@ -20,7 +20,7 @@ export default function ChatHistoryMenu({
         <div className="w-full">
           <ButtonComp
             onClick={newChatHandler}
-            className="dark:text-gray-300 font-semibold active:scale-[99%] ease-in-out duration-100 text-medium transition-all dark:bg-[#103838] w-full h-12 dark:hover:text-white flex justify-start px-6 rounded-3xl items-center">
+            className="dark:text-gray-300 font-semibold bg-gray-200 active:scale-[99%] ease-in-out duration-100 text-medium transition-all dark:bg-[#103838] w-full h-12 dark:hover:text-white flex justify-start px-6 rounded-3xl items-center">
             New chat
           </ButtonComp>
         </div>

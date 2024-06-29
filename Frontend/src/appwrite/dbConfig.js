@@ -1,6 +1,6 @@
 // dbConfig.js
 import conf from '../conf'
-import { Client, Databases } from 'appwrite'
+import { Client, Databases, Query } from 'appwrite'
 
 export class DBService {
     client = new Client()
@@ -74,7 +74,8 @@ export class DBService {
         }
     }
 
-    async getChats(queries) {
+    async getChats(userId) {
+        const queries = [Query.equal("userId", [userId])]
         try {
             return await this.databases.listDocuments(
                 conf.appwriteDatabaseId,
