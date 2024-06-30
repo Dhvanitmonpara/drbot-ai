@@ -28,6 +28,7 @@ function ChatPage() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [isChatActive, setIsChatActive] = useState(false);
+  const [isChatLoading, setIsChatLoading] = useState(false);
   const isUserLoggedIn = useSelector((state) => state.auth.isUserLoggedIn);
   const rawUserData = useSelector((state) => state.auth.userData);
   const rawAllChats = useSelector((state) => state.chat.chats.documents);
@@ -69,6 +70,7 @@ function ChatPage() {
 
   const msgHandler = async (e) => {
     e.preventDefault();
+    setIsChatLoading(true);
     if (chatId && input.trim()) {
       const newChatMsg = {
         id: Date.now().toString(),
@@ -99,10 +101,11 @@ function ChatPage() {
           dispatch(
             addMessage({ chatId, message: newChatMsg, userId: userData?.$id })
           );
-
-          setInput("");
         } catch (error) {
           setError("Failed to send message: ", error);
+        } finally {
+          setIsChatLoading(false);
+          setInput("");
         }
       } else {
         try {
@@ -120,9 +123,11 @@ function ChatPage() {
             addMessage({ chatId, message: newChatMsg, userId: userData?.$id })
           );
           dispatch(updateChatTitle({ chatId, title: newChat.title }));
-          setInput("");
         } catch (error) {
           setError("Failed to create chat: ", error);
+        } finally {
+          setIsChatLoading(false);
+          setInput("");
         }
       }
     }
@@ -257,14 +262,21 @@ function ChatPage() {
                 />
               </div>
               <div className="md:inline-block hidden">
-                <SendButton />
+                <SendButton isLoading={isChatLoading} />
               </div>
               <div>
-                <button
-                  className="inline-block md:hidden rounded-xl ease-in-out active:scale-[95%] transition-colors
+                {isChatLoading ? (
+                  <div className="inline-block md:hidden rounded-xl ease-in-out active:scale-[95%] transition-colors
                   px-5 py-[13px] bg-[#40bb98] active:bg-[#32a685]">
-                  <FontAwesomeIcon icon={faPaperPlane} />
-                </button>
+                    <div className="circleChatLoader"></div>
+                  </div>
+                ) : (
+                  <button
+                    className="inline-block md:hidden rounded-xl ease-in-out active:scale-[95%] transition-colors
+                  px-5 py-[13px] bg-[#40bb98] active:bg-[#32a685]">
+                    <FontAwesomeIcon icon={faPaperPlane} />
+                  </button>
+                )}
               </div>
             </form>
           </div>
