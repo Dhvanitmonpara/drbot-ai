@@ -48,10 +48,6 @@ Welcome to Dr. Bot, your friendly healthcare chatbot! Dr. Bot is designed to pro
 - **User-Friendly Interface**: Simple and intuitive design for all age groups.
 - **Secure and Confidential**: Your privacy is our priority.
 
-## Screenshots
-
-
-
 ## Installation
 
 To get a local copy up and running follow these simple steps:
