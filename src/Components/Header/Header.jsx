@@ -25,7 +25,7 @@ function Header() {
 
   return (
     <>
-      <header className="h-[15vh] overflow-x-hidden w-screen z-40 flex justify-between items-center px-6 md:px-16 lg:px-24">
+      <header className="h-[15vh] w-screen z-40 flex justify-between items-center px-6 md:px-16 lg:px-24">
         <MenuButton className="md:hidden inline z-[60]" onClick={toggleMenu} />
         <Logo />
         <nav
