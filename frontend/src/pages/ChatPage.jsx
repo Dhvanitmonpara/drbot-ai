@@ -18,7 +18,7 @@ import {
   updateChatTitle,
 } from "../store/chatSlice";
 import dbService from "../appwrite/dbConfig";
-import run from "../../../backend/server";
+import run from "../server";
 
 function ChatPage() {
   const [chat, setChat] = useState(null);

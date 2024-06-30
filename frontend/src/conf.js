@@ -3,7 +3,6 @@ const conf = {
     appwriteProjectId: String(import.meta.env.VITE_APPWRITE_PROJECT_ID),
     appwriteDatabaseId: String(import.meta.env.VITE_APPWRITE_DATABASE_ID),
     appwriteCollectionId: String(import.meta.env.VITE_APPWRITE_COLLECTION_ID),
-    aiApiUrl: String(import.meta.env.AI_API_URL),
+    geminiApiUrl: String(import.meta.env.VITE_GEMINI_API_URL),
 }
-
 export default conf
