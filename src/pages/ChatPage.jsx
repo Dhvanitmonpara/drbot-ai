@@ -34,7 +34,7 @@ function ChatPage() {
   const { chatId } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
-  const isGlobalInput = useSelector((state) => state.chat.globalInput)
+  const isGlobalInput = useSelector((state) => state.chat.globalInput);
   const dispatch = useDispatch();
   const MsgInputRef = useRef(null);
 
@@ -182,7 +182,11 @@ function ChatPage() {
               className={`w-screen fixed z-10 overflow-hidden ease-in-out transition-all dark:bg-[#0c2929] bg-[#EBF7F7] ${
                 isRotated ? "h-[85vh]" : "h-0"
               }`}>
-              <ChatHistoryMenu chats={allChats} className="z-10" />
+              <ChatHistoryMenu
+                allChats={allChats}
+                newChatHandler={newChatHandler}
+                className="z-10"
+              />
             </div>
             <div className="main-content px-2 w-full py-0 flex justify-center items-center h-[97%] overflow-y-scroll md:h-[70vh] lg:h-[64vh]">
               {isChatActive ? (

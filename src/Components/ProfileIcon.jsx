@@ -30,11 +30,11 @@ function ProfileIcon() {
   }, [isUserLoggedIn, rawUserData]);
 
   return (
-    <div className="dropdown dropdown-end z-[55] text-white">
+    <div className="dropdown w-12 dropdown-end z-[55] text-white">
       <div
         tabIndex={0}
         role="button"
-        className="btn m-1 bg-transparent border-none hover:bg-transparent">
+        className="btn px-0 flex justify-center items-center bg-transparent border-none hover:bg-transparent">
         <div className="avatar placeholder cursor-pointer ">
           <div className="bg-[#33691e] text-white w-11 rounded-full">
             <span className="text-xs">UI</span>
