@@ -1,5 +1,5 @@
 import React from 'react';
-import cuteLogo from 'C:/Users/DevXKaran/Desktop/ai-health-assistant/Frontend/src/Components/Img/cute.png';
+import cuteLogo from '../assets/images';
 
 function Logo() {
   return (
