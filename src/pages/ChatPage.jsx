@@ -191,6 +191,8 @@ function ChatPage() {
                 allChats={allChats}
                 newChatHandler={newChatHandler}
                 className="z-10"
+                isSmallScreen={true}
+                handleToggle={handleToggle}
               />
             </div>
             <div className="main-content px-2 w-full py-0 flex justify-center items-center h-[97%] overflow-y-scroll md:h-[70vh] lg:h-[64vh]">

@@ -6,6 +6,8 @@ export default function ChatHistoryMenu({
   className,
   allChats,
   newChatHandler,
+  isSmallScreen = false,
+  handleToggle,
 }) {
   return (
     <div
@@ -24,11 +26,14 @@ export default function ChatHistoryMenu({
             New chat
           </ButtonComp>
         </div>
-        <hr className="bg-gray-500 my-3"/>
+        <hr className="bg-gray-500 my-3" />
         {allChats &&
           allChats.map((chat) => (
             <NavLink
               to={`/chats/${chat.id}`}
+              onClick={() => {
+                isSmallScreen ? handleToggle() : null;
+              }}
               className={({ isActive }) =>
                 `font-medium text-medium ${
                   isActive
