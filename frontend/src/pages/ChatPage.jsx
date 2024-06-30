@@ -39,6 +39,10 @@ function ChatPage() {
   const dispatch = useDispatch();
   const MsgInputRef = useRef(null);
 
+  // ai api handling
+
+  
+
   const newChatHandler = () => {
     const newChatId = new Date().getTime().toString();
     navigate(`/chats/${newChatId}`);
