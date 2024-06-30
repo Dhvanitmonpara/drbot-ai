@@ -1,11 +1,11 @@
 import React from "react";
 import "./SendButton.css";
 
-function SendButton({ className = "", isLoading, ...props }) {
+function SendButton({ className = "", isLoading, isSendButtonActive,...props }) {
   return (
     <button
       {...props}
-      className={`sendButton h-[50px] pt-[0.7em] pr-[0.9em] pb-[0.7em] pl-[1em] bg-[#40bb98] ${className}`}>
+      className={`sendButton h-[50px] pt-[0.7em] pr-[0.9em] pb-[0.7em] pl-[1em] ${isSendButtonActive ? "bg-[#40bb98]" : "bg-[#175643]"} ${className}`}>
       {isLoading ? (
         <div className="chatLoader"></div>
       ) : (

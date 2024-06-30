@@ -1,33 +1,19 @@
-const express = require('express');
-const multer = require('multer');
-const { GoogleGenerativeAI } = require('@google/generative-ai');
+import { GoogleGenerativeAI } from "@google/generative-ai";
 
-const app = express();
-const upload = multer({ dest: './uploads/' });
-const apiKey = 'AIzaSyBsKibhqZSNAq0tQPi1uNL3SLvRpqo9-VI';
-const genAI = new GoogleGenerativeAI(apiKey);
+// Access your API key as an environment variable (see "Set up your API key" above)
+const genAI = new GoogleGenerativeAI('AIzaSyBLR_MjW87xh5hpZc22qHBj7ikO97ZSufk');
+const base_prompt = "You are an AI assistant that is an expert in medical health and is part of a hospital system called medicare AI You know about symptoms and signs of various types of illnesses. You can provide expert advice on self - diagnosis options in the case where an illness can be treated using a home remedy. If a query requires serious medical attention with a doctor, recommend them to book an appointment with our doctors If you are asked a question that is not related to medical health respond with 'Im sorry but your question is beyond my functionalities'. Do not use external URLs or blogs to refer Format any lists on individual lines with a dash and a space in front of each line."
 
-app.post('/generate-text', upload.single('image'), async (req, res) => {
-    try {
-        const imageBuffer = req.file.buffer;
-        const model = await genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
-        const result = await model.generateContent([
-            'What is in this photo?',
-            {
-                inlineData: {
-                    data: imageBuffer.toString('base64'),
-                    mimeType: 'image/png',
-                },
-            },
-        ]);
-        const generatedText = result.response.text();
-        res.json({ text: generatedText });
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: 'Failed to generate text' });
-    }
-});
+export default async function run(prompt) {
+    // The Gemini 1.5 models are versatile and work with both text-only and multimodal prompts
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
-app.listen(3000, () => {
-    console.log('Server listening on http://localhost:3000');
-});
+    // const prompt = "Write a story about a magic backpack."
+
+    const result = await model.generateContent(base_prompt + prompt);
+    const response = result.response;
+    const text = response.text();
+    return text
+}
+
+// run('feeling headache');

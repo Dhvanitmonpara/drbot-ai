@@ -18,6 +18,7 @@ import {
   updateChatTitle,
 } from "../store/chatSlice";
 import dbService from "../appwrite/dbConfig";
+import run from "../../../backend/server";
 
 function ChatPage() {
   const [chat, setChat] = useState(null);
@@ -29,6 +30,7 @@ function ChatPage() {
   const [loading, setLoading] = useState(false);
   const [isChatActive, setIsChatActive] = useState(false);
   const [isChatLoading, setIsChatLoading] = useState(false);
+  const [isSendButtonActive, setIsSendButtonActive] = useState(true);
   const isUserLoggedIn = useSelector((state) => state.auth.isUserLoggedIn);
   const rawUserData = useSelector((state) => state.auth.userData);
   const rawAllChats = useSelector((state) => state.chat.chats.documents);
@@ -40,8 +42,6 @@ function ChatPage() {
   const MsgInputRef = useRef(null);
 
   // ai api handling
-
-  
 
   const newChatHandler = () => {
     const newChatId = new Date().getTime().toString();
@@ -72,67 +72,89 @@ function ChatPage() {
       : setIsChatActive(true);
   }, [location, isGlobalInput]);
 
-  const msgHandler = async (e) => {
+  const chatSubmitHandler = (e, isUser, req) => {
+    if (isUser) {
+      msgHandler(e, isUser, req);
+    } else {
+      msgHandler(e, isUser);
+    }
+  };
+
+  const msgHandler = async (e, isAuthor, req="") => {
     e.preventDefault();
-    setIsChatLoading(true);
-    if (chatId && input.trim()) {
-      const newChatMsg = {
+    setIsSendButtonActive(false);
+    let newChatMsg;
+    if (isAuthor) {
+      const response = await run(req);
+      newChatMsg = {
         id: Date.now().toString(),
-        isAuthor: false,
-        text: input.trim(),
+        isAuthor: true,
+        text: response,
       };
+    } else {
+      setIsChatLoading(true);
+      if (chatId && input.trim()) {
+        newChatMsg = {
+          id: Date.now().toString(),
+          isAuthor: false,
+          text: input.trim(),
+        };
+      }
+    }
+    const chatExists = allChats.some((chat) => chat.id === chatId);
 
-      const chatExists = allChats.some((chat) => chat.id === chatId);
+    if (chatExists) {
+      try {
+        const rawChat = await allChats.find((chat) => chat.id === chatId);
+        const parsedContent = JSON.parse(rawChat.content);
+        const updatedContent = [...parsedContent, newChatMsg];
 
-      if (chatExists) {
-        try {
-          const rawChat = await allChats.find((chat) => chat.id === chatId);
-          const parsedContent = JSON.parse(rawChat.content);
-          const updatedContent = [...parsedContent, newChatMsg];
+        await dbService.sendMsg(chatId, {
+          content: JSON.stringify(updatedContent),
+        });
 
-          await dbService.sendMsg(chatId, {
-            content: JSON.stringify(updatedContent),
-          });
+        const updatedChat = {
+          ...rawChat,
+          content: JSON.stringify(updatedContent),
+        };
+        setAllChats((prevChats) =>
+          prevChats.map((chat) => (chat.id === chatId ? updatedChat : chat))
+        );
 
-          const updatedChat = {
-            ...rawChat,
-            content: JSON.stringify(updatedContent),
-          };
-          setAllChats((prevChats) =>
-            prevChats.map((chat) => (chat.id === chatId ? updatedChat : chat))
-          );
+        dispatch(
+          addMessage({ chatId, message: newChatMsg, userId: userData?.$id })
+        );
+      } catch (error) {
+        setError("Failed to send message: ", error);
+      } finally {
+        setIsChatLoading(false);
+        setIsSendButtonActive(true);
+        if (!isAuthor) chatSubmitHandler(e, true, input);
+        setInput("");
+      }
+    } else {
+      try {
+        const newChat = {
+          id: chatId,
+          title: `New Chat ${allChats.length + 1}`,
+          content: JSON.stringify([newChatMsg]),
+          userId: userData?.$id,
+        };
+        await dbService.createNewChat(newChat);
 
-          dispatch(
-            addMessage({ chatId, message: newChatMsg, userId: userData?.$id })
-          );
-        } catch (error) {
-          setError("Failed to send message: ", error);
-        } finally {
-          setIsChatLoading(false);
-          setInput("");
-        }
-      } else {
-        try {
-          const newChat = {
-            id: chatId,
-            title: `New Chat ${allChats.length + 1}`,
-            content: JSON.stringify([newChatMsg]),
-            userId: userData?.$id,
-          };
-          await dbService.createNewChat(newChat);
+        setAllChats((prevChats) => [...prevChats, newChat]);
 
-          setAllChats((prevChats) => [...prevChats, newChat]);
-
-          dispatch(
-            addMessage({ chatId, message: newChatMsg, userId: userData?.$id })
-          );
-          dispatch(updateChatTitle({ chatId, title: newChat.title }));
-        } catch (error) {
-          setError("Failed to create chat: ", error);
-        } finally {
-          setIsChatLoading(false);
-          setInput("");
-        }
+        dispatch(
+          addMessage({ chatId, message: newChatMsg, userId: userData?.$id })
+        );
+        dispatch(updateChatTitle({ chatId, title: newChat.title }));
+      } catch (error) {
+        setError("Failed to create chat: ", error);
+      } finally {
+        setIsChatLoading(false);
+        setIsSendButtonActive(true);
+        if (!isAuthor) chatSubmitHandler(e, true, input);
+        setInput("");
       }
     }
   };
@@ -251,7 +273,9 @@ function ChatPage() {
             </div>
             <form
               ref={MsgInputRef}
-              onSubmit={(e) => msgHandler(e)}
+              onSubmit={(e) =>
+                isSendButtonActive ? chatSubmitHandler(e, false) : null
+              }
               className="flex dark:bg-[#091f1f] md:dark:bg-[#0c2929] space-x-2 md:space-x-3 absolute justify-center bottom-0 md:bottom-3 items-center w-full">
               <div className="flex justify-center items-center w-9/12 2xl:w-5/6">
                 <Input
@@ -268,12 +292,21 @@ function ChatPage() {
                 />
               </div>
               <div className="md:inline-block hidden">
-                <SendButton isLoading={isChatLoading} />
+                <SendButton
+                  isLoading={isChatLoading}
+                  isSendButtonActive={isSendButtonActive}
+                />
               </div>
               <div>
                 {isChatLoading ? (
-                  <div className="inline-block md:hidden rounded-xl ease-in-out active:scale-[95%] transition-colors
-                  px-5 py-[13px] bg-[#40bb98] active:bg-[#32a685]">
+                  <div
+                    className={`inline-block md:hidden rounded-xl ease-in-out active:scale-[95%] transition-colors
+                  px-5 py-[13px] 
+                  ${
+                    isSendButtonActive
+                      ? "bg-[#40bb98] active:bg-[#32a685]"
+                      : "bg-[#175643] text-gray-500 active:bg-[#175643]"
+                  }`}>
                     <div className="circleChatLoader"></div>
                   </div>
                 ) : (
