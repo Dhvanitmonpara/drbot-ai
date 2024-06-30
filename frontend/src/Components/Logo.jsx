@@ -1,10 +1,11 @@
 import React from 'react';
-import cuteLogo from '../assets/images';
 
 function Logo() {
   return (
     <div>
-      <img src={cuteLogo} alt="Cute Logo" />
+      <h1 className='text-2xl font-semibold'>
+        Dr.Bot
+      </h1>
     </div>
   );
 }
