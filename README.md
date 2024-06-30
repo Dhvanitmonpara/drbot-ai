@@ -108,7 +108,7 @@ Project Link: <a href="https://github.com/your_username/Dr. Bot" target="_blank"
 - <a href="https://nodejs.org/" target="_blank">Node.js</a>
 - <a href="https://reactjs.org/" target="_blank">React</a>
 - <a href="https://getbootstrap.com/" target="_blank">Bootstrap</a>
-- <a href="https://www.openai.com/" target="_blank">OpenAI</a>
+- <a href="https://www.openai.com/" target="_blank">Gemini</a>
 - <a href="https://fontawesome.com/" target="_blank">Font Awesome</a>
 
 ---
