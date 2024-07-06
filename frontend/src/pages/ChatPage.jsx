@@ -80,81 +80,83 @@ function ChatPage() {
     }
   };
 
-  const msgHandler = async (e, isAuthor, req="") => {
+  const msgHandler = async (e, isAuthor, req = "") => {
     e.preventDefault();
-    setIsSendButtonActive(false);
-    let newChatMsg;
-    if (isAuthor) {
-      const response = await run(req);
-      newChatMsg = {
-        id: Date.now().toString(),
-        isAuthor: true,
-        text: response,
-      };
-    } else {
-      setIsChatLoading(true);
-      if (chatId && input.trim()) {
+    if (input) {
+      setIsSendButtonActive(false);
+      let newChatMsg;
+      if (isAuthor) {
+        const response = await run(req);
         newChatMsg = {
           id: Date.now().toString(),
-          isAuthor: false,
-          text: input.trim(),
+          isAuthor: true,
+          text: response,
         };
+      } else {
+        setIsChatLoading(true);
+        if (chatId && input.trim()) {
+          newChatMsg = {
+            id: Date.now().toString(),
+            isAuthor: false,
+            text: input.trim(),
+          };
+        }
       }
-    }
-    const chatExists = allChats.some((chat) => chat.id === chatId);
+      const chatExists = allChats.some((chat) => chat.id === chatId);
 
-    if (chatExists) {
-      try {
-        const rawChat = await allChats.find((chat) => chat.id === chatId);
-        const parsedContent = JSON.parse(rawChat.content);
-        const updatedContent = [...parsedContent, newChatMsg];
+      if (chatExists) {
+        try {
+          const rawChat = await allChats.find((chat) => chat.id === chatId);
+          const parsedContent = JSON.parse(rawChat.content);
+          const updatedContent = [...parsedContent, newChatMsg];
 
-        await dbService.sendMsg(chatId, {
-          content: JSON.stringify(updatedContent),
-        });
+          await dbService.sendMsg(chatId, {
+            content: JSON.stringify(updatedContent),
+          });
 
-        const updatedChat = {
-          ...rawChat,
-          content: JSON.stringify(updatedContent),
-        };
-        setAllChats((prevChats) =>
-          prevChats.map((chat) => (chat.id === chatId ? updatedChat : chat))
-        );
+          const updatedChat = {
+            ...rawChat,
+            content: JSON.stringify(updatedContent),
+          };
+          setAllChats((prevChats) =>
+            prevChats.map((chat) => (chat.id === chatId ? updatedChat : chat))
+          );
 
-        dispatch(
-          addMessage({ chatId, message: newChatMsg, userId: userData?.$id })
-        );
-      } catch (error) {
-        setError("Failed to send message: ", error);
-      } finally {
-        setIsChatLoading(false);
-        setIsSendButtonActive(true);
-        if (!isAuthor) chatSubmitHandler(e, true, input);
-        setInput("");
-      }
-    } else {
-      try {
-        const newChat = {
-          id: chatId,
-          title: `New Chat ${allChats.length + 1}`,
-          content: JSON.stringify([newChatMsg]),
-          userId: userData?.$id,
-        };
-        await dbService.createNewChat(newChat);
+          dispatch(
+            addMessage({ chatId, message: newChatMsg, userId: userData?.$id })
+          );
+        } catch (error) {
+          setError("Failed to send message: ", error);
+        } finally {
+          setIsChatLoading(false);
+          setIsSendButtonActive(true);
+          if (!isAuthor) chatSubmitHandler(e, true, input);
+          setInput("");
+        }
+      } else {
+        try {
+          const newChat = {
+            id: chatId,
+            title: `New Chat ${allChats.length + 1}`,
+            content: JSON.stringify([newChatMsg]),
+            userId: userData?.$id,
+          };
+          await dbService.createNewChat(newChat);
 
-        setAllChats((prevChats) => [...prevChats, newChat]);
+          setAllChats((prevChats) => [...prevChats, newChat]);
 
-        dispatch(
-          addMessage({ chatId, message: newChatMsg, userId: userData?.$id })
-        );
-        dispatch(updateChatTitle({ chatId, title: newChat.title }));
-      } catch (error) {
-        setError("Failed to create chat: ", error);
-      } finally {
-        setIsChatLoading(false);
-        setIsSendButtonActive(true);
-        if (!isAuthor) chatSubmitHandler(e, true, input);
-        setInput("");
+          dispatch(
+            addMessage({ chatId, message: newChatMsg, userId: userData?.$id })
+          );
+          dispatch(updateChatTitle({ chatId, title: newChat.title }));
+        } catch (error) {
+          setError("Failed to create chat: ", error);
+        } finally {
+          setIsChatLoading(false);
+          setIsSendButtonActive(true);
+          if (!isAuthor) chatSubmitHandler(e, true, input);
+          setInput("");
+        }
       }
     }
   };
