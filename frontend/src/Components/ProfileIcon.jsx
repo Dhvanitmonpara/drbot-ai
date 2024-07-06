@@ -23,8 +23,11 @@ function ProfileIcon() {
   useEffect(() => {
     if (isUserLoggedIn) {
       if (rawUserData) {
-        setUserData(rawUserData.userData);
-        if (!userData) setUserData(rawUserData);
+        if (rawUserData.userData) {
+          setUserData(rawUserData.userData);
+        } else {
+          setUserData(rawUserData);
+        }
       }
     }
   }, [isUserLoggedIn, rawUserData]);
