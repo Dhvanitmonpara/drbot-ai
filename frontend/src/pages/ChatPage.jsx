@@ -7,7 +7,7 @@ import {
   ArrowDownIcon,
 } from "../Components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
+import { faL, faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
@@ -18,7 +18,6 @@ import {
   updateChatTitle,
 } from "../store/chatSlice";
 import dbService from "../appwrite/dbConfig";
-import run from "../server";
 
 function ChatPage() {
   const [chat, setChat] = useState(null);
@@ -31,6 +30,7 @@ function ChatPage() {
   const [isChatActive, setIsChatActive] = useState(false);
   const [isChatLoading, setIsChatLoading] = useState(false);
   const [isSendButtonActive, setIsSendButtonActive] = useState(true);
+  const [isBotAnswering, setIsBotAnswering] = useState(false)
   const isUserLoggedIn = useSelector((state) => state.auth.isUserLoggedIn);
   const rawUserData = useSelector((state) => state.auth.userData);
   const rawAllChats = useSelector((state) => state.chat.chats.documents);
@@ -86,6 +86,7 @@ function ChatPage() {
       setIsSendButtonActive(false);
       let newChatMsg;
       if (isAuthor) {
+        setIsBotAnswering(true)
         const response = await run(req);
         newChatMsg = {
           id: Date.now().toString(),
@@ -129,6 +130,7 @@ function ChatPage() {
           setError("Failed to send message: ", error);
         } finally {
           setIsChatLoading(false);
+          setIsBotAnswering(false);
           setIsSendButtonActive(true);
           if (!isAuthor) chatSubmitHandler(e, true, input);
           setInput("");
@@ -153,6 +155,7 @@ function ChatPage() {
           setError("Failed to create chat: ", error);
         } finally {
           setIsChatLoading(false);
+          setIsBotAnswering(false) 
           setIsSendButtonActive(true);
           if (!isAuthor) chatSubmitHandler(e, true, input);
           setInput("");
@@ -251,6 +254,11 @@ function ChatPage() {
                         {individualChat.text}
                       </ChatBubble>
                     ))}
+                  {isBotAnswering && (
+                    <ChatBubble isChatStart="true" >
+                      <div className="darkChatLoader"></div>
+                    </ChatBubble>
+                  )}
                   {(chat == [] &&
                     typeof chat.content == "object" &&
                     chat.content.length == 0) ||
