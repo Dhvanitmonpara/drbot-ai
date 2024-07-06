@@ -1,5 +1,5 @@
 [data-theme="light"] {
-  --color-start: rgb(255, 255, 255, 1);
+  --color-start: rgba(242, 252, 250, 1);
   --color-end: rgba(255, 255, 255, 0);
   --color-start-sm: rgba(235, 247, 247, 1);
 }

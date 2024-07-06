@@ -26,7 +26,7 @@ const ArrowDownIcon = ({ className = '', width = 24, height = 24, isRotated = fa
         <path
           d="M12 16a1 1 0 0 1-.71-.29l-6-6a1 1 0 0 1 1.42-1.42l5.29 5.3 5.29-5.29a1 1 0 0 1 1.41 1.41l-6 6a1 1 0 0 1-.7.29z"
           data-name="16"
-          fill={theme ? "#fff" : "000"}
+          fill={theme ? "#fff" : "#000"}
           opacity="1"
           data-original="#000000"
         />
