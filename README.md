@@ -1,6 +1,6 @@
 <br />
 <div align="center">
-  <a href="https://ai-health-assistant-lovat.vercel.app/" alt='logo' >
+  <a href="https://drbot-ai.vercel.app/" alt='logo' >
     <img src="/frontend//src/assets/WhatsApp Image 2024-06-30 at 22.04.44_27e44073.jpg" alt="Logo" width="260">
   </a>
 
